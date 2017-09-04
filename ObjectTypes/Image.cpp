@@ -61,15 +61,6 @@ ColourRGB Image::textureMap(double a, double b) const {
      to determine texture colour.
      */
     
-    //////////////////////////////////////////////////
-    // TO DO (Assignment 4 only):
-    //
-    //  Complete this function to return the colour
-    // of the texture image at the specified texture
-    // coordinates. Your code should use bi-linear
-    // interpolation to obtain the texture colour.
-    //////////////////////////////////////////////////
-    
     // NOTE: Assuming that texture wraps around at the edges
     
     b = 1-b; // in immages space, b increases downwards
@@ -93,7 +84,7 @@ bool Image::readPPMimage(const char *filename, Image *im) {
     // format with a text header followed by the binary RGB data at 24bits per pixel.
     // The header has the following form:
     //
-    // P6
+    // P6 
     // # One or more comment lines preceded by '#'
     // 340 200
     // 255
@@ -133,7 +124,7 @@ bool Image::readPPMimage(const char *filename, Image *im) {
         }
         if (fgets(&line[0],1000,f))
             ;
-        if (strcmp(&line[0],"P6\n")!=0)
+        if (strcmp(&line[0],"P6\n")!=0 && strcmp(&line[0], "P6\r\n")!=0)
         {
             fprintf(stderr,"Wrong file format, not a .ppm file or header end-of-line characters missing\n");
             fclose(f);
@@ -197,6 +188,27 @@ void Image::setColourAtPixel(int x, int y, ColourRGB colour) {
     *((unsigned char *)rgbImageData + 3*(y*sx + x) + 2) = B;
 }
 
+void Image::setColourAtPixel(int index, ColourRGB colour)
+{
+	if (index > sx * sy) {
+		printf("Error: pixel is out of bounds of the image\n");
+	}
+
+	if (colour.red < 0.0 || colour.red > 1.0 ||
+		colour.green < 0.0 || colour.green > 1.0 ||
+		colour.blue < 0.0 || colour.blue > 1.0) {
+		printf("Error: setting pixel to an invalid colour\n");
+	}
+
+	unsigned char R = (unsigned char)(int)(255 * (colour.red));
+	unsigned char G = (unsigned char)(int)(255 * (colour.green));
+	unsigned char B = (unsigned char)(int)(255 * (colour.blue));
+
+	*((unsigned char *)rgbImageData + 3 * index + 0) = R;
+	*((unsigned char *)rgbImageData + 3 * index + 1) = G;
+	*((unsigned char *)rgbImageData + 3 * index + 2) = B;
+}
+
 ColourRGB Image::getColourAtPixel(int x, int y) const {
     if (x >= sx || y >= sy) {
         printf("Error: pixel is out of bounds of the image\n");
@@ -208,6 +220,19 @@ ColourRGB Image::getColourAtPixel(int x, int y) const {
     unsigned char B = *((unsigned char *)rgbImageData + 3*(y*sx + x) + 2);
     
     return ColourRGB(R/255.0, G/255.0, B/255.0);
+}
+
+ColourRGB Image::getColourAtPixel(int index) const {
+	if (index >= sx * sy) {
+		printf("Error: pixel is out of bounds of the image\n");
+		return ColourRGB(-1, -1, -1);   // return invalid colour
+	}
+
+	unsigned char R = *((unsigned char *)rgbImageData + 3 * index + 0);
+	unsigned char G = *((unsigned char *)rgbImageData + 3 * index + 1);
+	unsigned char B = *((unsigned char *)rgbImageData + 3 * index + 2);
+
+	return ColourRGB(R / 255.0, G / 255.0, B / 255.0);
 }
 
 void Image::outputImage(const char *filename) {

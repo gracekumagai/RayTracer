@@ -16,6 +16,17 @@ ColourRGB Plane::colourAtLocalPoint(const Point3D &p) const {
     return textureImage.textureMap(a, b);
 }
 
+Point3D Plane::normalAtLocalPoint(const Point3D &p) const {
+	
+	double a = (p.x - p3.x) / (p1.x - p3.x);
+	double b = (p.y - p3.y) / (p1.y - p3.y);
+	ColourRGB res = normalImage.textureMap(a, b);
+
+	Point3D normal = res.convertToPoint3D(true);
+
+	return 2*normal + (-1);
+}
+
 Intersection Plane::intersect(const Ray3D &ray) {
     Intersection intersection;
     
@@ -46,12 +57,19 @@ Intersection Plane::intersect(const Ray3D &ray) {
 	{
 		Point3D hitNormalLocal = rayDirection.dot(normal) < 0 ? normal : -1*normal;
 
+		Point3D normal = (invTransform.transpose() * hitNormalLocal).normalized();
+
+		if (useNormalMap())
+		{
+			normal = normalAtLocalPoint(p);
+		}
+
 		intersection.none = false;
 		intersection.isLight = Object3D::isLight;
 		intersection.insideObject = false;
 		intersection.lambda = t;
 		intersection.point = ray.rayPosition(t);
-		intersection.normal = (invTransform.transpose() * hitNormalLocal).normalized();
+		intersection.normal = normal;
 		intersection.material = material;
 		intersection.colour = colourAtLocalPoint(p);
         intersection.canSelfReflect = false;

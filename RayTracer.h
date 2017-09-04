@@ -29,7 +29,7 @@ class RayTracer {
     // calls the recursive version with the appropriate starting parameters.
     //
     // pixelSize is used if antialiasing is enabled
-    ColourRGB rayTrace(Ray3D ray, double pixelSize);
+    ColourRGB rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel);
     
     // Recursive version of rayTrace. rayTrace is basically the public interface
     // that delegates to this function with the correct parameters
@@ -50,7 +50,7 @@ class RayTracer {
     // Returns:
     // - The colour for this ray
     //
-    ColourRGB shade(const Intersection &intersection, const Ray3D &ray, int depth);
+    ColourRGB shade(Intersection &intersection, const Ray3D &ray, int depth);
     
     
     // Find the closest intersection between the ray and any objects in the scene.
@@ -69,19 +69,38 @@ class RayTracer {
     
     ColourRGB reflection(const Intersection &intersection, const Ray3D &ray, int depth);
     
-    ColourRGB refraction(const Intersection &intersection, const Ray3D &ray, int depth);
+    ColourRGB refraction(const Intersection &intersection, const Ray3D &ray, int depth, double refractionIndex);
     
+	double totalInternalReflection(const Intersection &intersection, const Ray3D &ray, double refractionIndex);
+
+	ColourRGB applyFog(ColourRGB colour, double distance);
+
 public:
     bool antialiasingEnabled = false;
     bool glossyreflEnabled = false;
     bool refractionEnabled = false;
+	bool blurEnabled = false;
     int maxDepth = 3;
     int superSamplingResolution = 5;
     int glossyResolution = 8;
+	int blurResolution = 8;
     Skybox *skybox = NULL;
+
+	//Depth of field
+	bool dofEnabled = false;
+	double focalLength = 2.0;
+	double apeture = 0.0078;
+	double b = 0.5;
+	int dofResolution = 500;
+
+	//Fog
+	bool fogEnabled = false;
+	double falloff = 1.0;
     
     void renderImage(View camera, list<Object3D*> objects, list<Light*> lights,
                      Image *output, char * name, vector<int> bounds);
+
+	void renderNoiseImage(Image *output, char * name, vector<int> bounds);
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "AreaLightElement.h"
 #include "../ObjectTypes/ObjectSubclasses/PlaneLightSource.h"
+#include "../Utilities/Helper.h"
 #include <stdlib.h>
 
 AreaLightElement::AreaLightElement(const ColourRGB &colour, const Point3D &location,

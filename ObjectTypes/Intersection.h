@@ -4,6 +4,7 @@
 #include "../GeometricTypes/Point3D.h"
 #include "Material.h"
 #include "ColourRGB.h"
+#include "../GeometricTypes/Transform3D.h"
 
 class Intersection {
 public:
@@ -13,6 +14,7 @@ public:
     Material material;
     ColourRGB colour;
     double lambda;
+	Transform3D transform; //Model to World
     
     bool none;
     bool insideObject;

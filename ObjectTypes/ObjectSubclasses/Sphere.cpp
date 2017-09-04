@@ -1,6 +1,8 @@
 #include "Sphere.h"
 #include <math.h>
 
+#define M_PI 3.14
+
 Sphere::Sphere(const Material &material, const ColourRGB &colour) :
 Object3D::Object3D(material, colour) {
     Object3D::isLight = false;

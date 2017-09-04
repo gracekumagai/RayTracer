@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Lights">
+      <UniqueIdentifier>{a4187a68-2afd-41ed-ad72-7a02e735c0e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeometricTypes">
+      <UniqueIdentifier>{9a5bf084-bdf6-4c55-87a9-e3d3f94e6914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectTypes">
+      <UniqueIdentifier>{89fead23-b462-40ed-939e-cd1aabcdb8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectTypes\ObjectSubclasses">
+      <UniqueIdentifier>{5653ef58-3ee3-4346-ad89-af7a991c7f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{78570e22-278e-4b1f-9559-83fdaa457a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="View.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geometrictypes\Point3D.cpp">
+      <Filter>GeometricTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="geometrictypes\svdDynamic.cpp">
+      <Filter>GeometricTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="geometrictypes\Transform3D.cpp">
+      <Filter>GeometricTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="lights\AreaLightElement.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="lights\Light.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="lights\PointLightSource.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\ColourRGB.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\Image.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\Material.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\Object3D.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\Ray3D.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\Intersection.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\objectsubclasses\TriangleMesh.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\objectsubclasses\BoundingBox.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\objectsubclasses\Sphere.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\objectsubclasses\PlaneLightSource.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\objectsubclasses\Plane.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="objecttypes\objectsubclasses\OBJ_Loader.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Helper.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\ProgressManager.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTypes\PerlinNoise.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTypes\Fractals.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTypes\Spectrum.cpp">
+      <Filter>ObjectTypes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RayTracer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="View.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrictypes\Point3D.h">
+      <Filter>GeometricTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrictypes\svdDynamic.h">
+      <Filter>GeometricTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrictypes\Transform3D.h">
+      <Filter>GeometricTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="lights\AreaLightElement.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="lights\Light.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="lights\PointLightSource.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\ColourRGB.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\Image.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\Intersection.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\Material.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\Object3D.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\Ray3D.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\objectsubclasses\BoundingBox.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\objectsubclasses\OBJ_Loader.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\objectsubclasses\Plane.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\objectsubclasses\PlaneLightSource.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\objectsubclasses\Sphere.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="objecttypes\objectsubclasses\TriangleMesh.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Helper.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\ProgressManager.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTypes\PerlinNoise.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTypes\Fractals.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTypes\Spectrum.h">
+      <Filter>ObjectTypes</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

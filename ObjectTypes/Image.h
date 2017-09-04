@@ -35,7 +35,9 @@ public:
     //
     
     void setColourAtPixel(int x, int y, ColourRGB color);
+	void setColourAtPixel(int index, ColourRGB color);
     ColourRGB getColourAtPixel(int x, int y) const;
+	ColourRGB getColourAtPixel(int index) const;
     void outputImage(const char *filename);
 };
 

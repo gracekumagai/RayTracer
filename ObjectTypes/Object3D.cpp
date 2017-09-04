@@ -75,3 +75,19 @@ void Object3D::loadTexture(const char *filename) {
         printf("Error: could not load texture %s\n", filename);
     }
 }
+
+bool Object3D::useNormalMap()
+{
+	if (normalImage.rgbImageData == NULL) {
+		return false;
+	}
+	return true;
+}
+
+void Object3D::loadNormalTexture(const char *filename) {
+	bool success = Image::readPPMimage(filename, &normalImage);
+	if (!success) {
+		printf("Error: could not load texture %s\n", filename);
+	}
+
+}

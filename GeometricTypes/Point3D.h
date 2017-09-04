@@ -28,6 +28,7 @@ public:
     
     Point3D operator+(const Point3D &other) const;
     Point3D operator-(const Point3D &other) const;
+	Point3D operator+(double offset) const;
     Point3D operator*(double scale) const;          // vec * scalar
     
     bool operator==(const Point3D &other) const;

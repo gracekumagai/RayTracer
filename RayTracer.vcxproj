@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B7742DA9-8319-46EA-9B90-038AA8E15B92}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="geometrictypes\Point3D.cpp" />
+    <ClCompile Include="geometrictypes\svdDynamic.cpp" />
+    <ClCompile Include="geometrictypes\Transform3D.cpp" />
+    <ClCompile Include="lights\AreaLightElement.cpp" />
+    <ClCompile Include="lights\Light.cpp" />
+    <ClCompile Include="lights\PointLightSource.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="objecttypes\ColourRGB.cpp" />
+    <ClCompile Include="ObjectTypes\Fractals.cpp" />
+    <ClCompile Include="objecttypes\Image.cpp" />
+    <ClCompile Include="objecttypes\Intersection.cpp" />
+    <ClCompile Include="objecttypes\Material.cpp" />
+    <ClCompile Include="objecttypes\Object3D.cpp" />
+    <ClCompile Include="objecttypes\objectsubclasses\BoundingBox.cpp" />
+    <ClCompile Include="objecttypes\objectsubclasses\OBJ_Loader.cpp" />
+    <ClCompile Include="objecttypes\objectsubclasses\Plane.cpp" />
+    <ClCompile Include="objecttypes\objectsubclasses\PlaneLightSource.cpp" />
+    <ClCompile Include="objecttypes\objectsubclasses\Sphere.cpp" />
+    <ClCompile Include="objecttypes\objectsubclasses\TriangleMesh.cpp" />
+    <ClCompile Include="ObjectTypes\PerlinNoise.cpp" />
+    <ClCompile Include="objecttypes\Ray3D.cpp" />
+    <ClCompile Include="ObjectTypes\Spectrum.cpp" />
+    <ClCompile Include="RayTracer.cpp" />
+    <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Utilities\Helper.cpp" />
+    <ClCompile Include="utilities\ProgressManager.cpp" />
+    <ClCompile Include="View.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="geometrictypes\Point3D.h" />
+    <ClInclude Include="geometrictypes\svdDynamic.h" />
+    <ClInclude Include="geometrictypes\Transform3D.h" />
+    <ClInclude Include="lights\AreaLightElement.h" />
+    <ClInclude Include="lights\Light.h" />
+    <ClInclude Include="lights\PointLightSource.h" />
+    <ClInclude Include="objecttypes\ColourRGB.h" />
+    <ClInclude Include="ObjectTypes\Fractals.h" />
+    <ClInclude Include="objecttypes\Image.h" />
+    <ClInclude Include="objecttypes\Intersection.h" />
+    <ClInclude Include="objecttypes\Material.h" />
+    <ClInclude Include="objecttypes\Object3D.h" />
+    <ClInclude Include="objecttypes\objectsubclasses\BoundingBox.h" />
+    <ClInclude Include="objecttypes\objectsubclasses\OBJ_Loader.h" />
+    <ClInclude Include="objecttypes\objectsubclasses\Plane.h" />
+    <ClInclude Include="objecttypes\objectsubclasses\PlaneLightSource.h" />
+    <ClInclude Include="objecttypes\objectsubclasses\Sphere.h" />
+    <ClInclude Include="objecttypes\objectsubclasses\TriangleMesh.h" />
+    <ClInclude Include="ObjectTypes\PerlinNoise.h" />
+    <ClInclude Include="objecttypes\Ray3D.h" />
+    <ClInclude Include="ObjectTypes\Spectrum.h" />
+    <ClInclude Include="RayTracer.h" />
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Utilities\Helper.h" />
+    <ClInclude Include="utilities\ProgressManager.h" />
+    <ClInclude Include="View.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

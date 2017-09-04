@@ -14,6 +14,7 @@ class Plane : public Object3D {
     const Point3D normal = Point3D(0, 0, 1, true);
     
     ColourRGB colourAtLocalPoint(const Point3D &p) const;
+	Point3D normalAtLocalPoint(const Point3D &p) const;
     
 public:
     Plane(const Material &material, const ColourRGB &colour);

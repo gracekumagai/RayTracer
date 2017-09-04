@@ -24,6 +24,7 @@
 #include "ObjectTypes/ObjectSubclasses/Plane.h"
 #include "ObjectTypes/ObjectSubclasses/Sphere.h"
 #include "ObjectTypes/ObjectSubclasses/TriangleMesh.h"
+#include "ObjectTypes/Fractals.h"
 #include "Lights/PointLightSource.h"
 #include "Lights/AreaLightElement.h"
 
@@ -112,72 +113,35 @@ void buildStillLife(void)
                                    ColourRGB(0.8, 0.8, 0.8), lights);
 }
 
-void buildScene(void)
+void buildSceneGlass(void)
 {
-    // Sets up all objects in the scene. This involves creating each object,
-    // defining the transformations needed to shape and position it as
-    // desired, specifying the reflectance properties (material and colours)
-    // and setting up textures where needed.
-    // Light sources must be defined, positioned, and their colour defined.
-    // All objects must be inserted in the object_list. All light sources
-    // must be inserted in the light_list.
-    //
-    // To create hierarchical objects:
-    //   Copy the transform matrix from the parent node to the child, and
-    //   apply any required transformations afterwards.
-    //
-    // NOTE: After setting up the transformations for each object, don't
-    //       forget to set up the inverse transform matrix!
-    
-    ///////////////////////////////////////
-    // TO DO: For Assignment 3 you have to use
-    //        the simple scene provided
-    //        here, but for Assignment 4 you
-    //        *MUST* define your own scene.
-    //        Part of your mark will depend
-    //        on how nice a scene you
-    //        create. Use the simple scene
-    //        provided as a sample of how to
-    //        define and position objects.
-    ///////////////////////////////////////
-    
-    // Simple scene for Assignment 3:
-    // Insert a couple of objects. A plane and two spheres
-    // with some transformations.
-    
-    // Let's add a plane
-    // Note the plane is highly-reflective (rs=rg=.75) so we
-    // should see some reflections if all is done properly.
-    // Colour is close to cyan, and currently the plane is
-    // completely opaque (alpha=1). The refraction index is
-    // meaningless since alpha=1
-    Object3D *obj = new Plane(Material(0.05, 0.75, 0.05, 0.05, 1, 1, 2, 0.3),  // original
-                              ColourRGB(0.55, 0.8, 0.75));
-    obj->scale(12, 12, 2);
+    Object3D *obj = new Plane(Material(0.0, 0.5, 0.0, 1.0, 0.5, 1.5, 100.8, 0.0),  // original
+					ColourRGB(1.0, 1.0, 1.0));
+    obj->scale(20, 20, 2);
     obj->rotateZ(PI/1.20);
     obj->rotateX(PI/2.25);
-    obj->translate(0, -3, 10);
+    obj->translate(0, 0, 10);
     // and store the inverse
     // transform for this object!
-//    obj->loadTexture("Textures/greyscale_natural_grunge2.ppm");
+    obj->loadNormalTexture("NormalMap.ppm");
     objects.push_front(obj);    // Insert into object list
     
     // Let's add a couple spheres
     obj = new Sphere(Material(0.05, 0.95, 0.35, 0.35, 1, 1, 6, 0.3),
-                     ColourRGB(1.0, 0.25, 0.25));
-    obj->scale(0.75, 0.5, 1.5);
-    obj->rotateY(PI/2.0);
-    obj->translate(-1.45, 1.1, 3.5);
+                     ColourRGB(1.0, 0.2, 0.2));
+    obj->scale(2.0, 2.0, 2.0);
+    //obj->rotateY(PI/2.0);
+    obj->translate(0.0, 1.5, 7.0);
 //    obj->loadTexture("Textures/webtreats_stone_5.ppm");
     objects.push_front(obj);
     
-    obj = new Sphere(Material(0.05, 0.95, 0.95, 0.75, 1, 1, 6, 0.3),
+    /*obj = new Sphere(Material(0.05, 0.95, 0.95, 0.75, 1, 1, 6, 0.3),
                      ColourRGB(0.75, 0.95, 0.55));
     obj->scale(0.5, 2.0, 1.0);
     obj->rotateZ(PI/1.5);
     obj->translate(1.75, 1.25, 5.0);
 //    obj->loadTexture("Textures/webtreats_stone_4.ppm");
-    objects.push_front(obj);
+    objects.push_front(obj);*/
     
     // Test OBJ
     //    obj = new TriangleMesh("OBJ/table.obj",Material(0.05, 0.95, 0.35, 0.35, 1, 1, 6, 0.3),
@@ -203,6 +167,171 @@ void buildScene(void)
     //           the relflectance properties of your objects, and the number and type of light sources
     //           in the scene.
 }
+
+void buildScene(void)
+{
+	Object3D *obj = new Plane(Material(0.05, 0.75, 0.05, 0.05, 0.5, 1, 2, 0.3),  // original
+		ColourRGB(0.55, 0.8, 0.75));
+	obj->scale(12, 12, 2);
+	obj->rotateZ(PI / 1.20);
+	obj->rotateX(PI / 2.25);
+	obj->translate(0, -3, 10);
+	// and store the inverse
+	// transform for this object!
+	//    obj->loadTexture("Textures/greyscale_natural_grunge2.ppm");
+	objects.push_front(obj);    // Insert into object list
+
+								// Let's add a couple spheres
+	obj = new Sphere(Material(0.05, 0.95, 0.35, 0.35, 1, 1, 6, 0.3),
+		ColourRGB(1.0, 0.25, 0.25));
+	obj->scale(0.75, 0.5, 1.5);
+	obj->rotateY(PI / 2.0);
+	obj->translate(-1.45, 1.1, 3.5);
+	//    obj->loadTexture("Textures/webtreats_stone_5.ppm");
+	objects.push_front(obj);
+
+	obj = new Sphere(Material(0.05, 0.95, 0.95, 0.75, 1, 1, 6, 0.3),
+		ColourRGB(0.75, 0.95, 0.55));
+	obj->scale(0.5, 2.0, 1.0);
+	obj->rotateZ(PI / 1.5);
+	obj->translate(1.75, 1.25, 5.0);
+	//    obj->loadTexture("Textures/webtreats_stone_4.ppm");
+	objects.push_front(obj);
+
+	// Test OBJ
+	//    obj = new TriangleMesh("OBJ/table.obj",Material(0.05, 0.95, 0.35, 0.35, 1, 1, 6, 0.3),
+	//                                     ColourRGB(1.0, 0.25, 0.25));
+	//    //obj->scale(1.5, 1.5, 1.5);
+	//    //obj->translate(1, 0, 3.5);
+	//    obj->updateInverse();
+	//    objects.push_front(obj);
+
+	// Insert a single point light source.
+	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
+		Point3D(0.0, 15.5, -5.5, false));
+	lights.push_front(light);
+	//    AreaLightElement::addAreaLight(5, 5, Point3D(0, -1, 0, true), Point3D(1, 0, 0, true),
+	//                                   Point3D(0.0, 15.5, -5.5, false), 8, 8,
+	//                                   ColourRGB(0.95, 0.95, 0.95), lights);
+
+	// End of simple scene for Assignment 3
+	// Keep in mind that you can define new types of objects such as cylinders and parametric surfaces,
+	// or, you can create code to handle arbitrary triangles and then define objects as surface meshes.
+	//
+	// Remember: A lot of the quality of your scene will depend on how much care you have put into defining
+	//           the relflectance properties of your objects, and the number and type of light sources
+	//           in the scene.
+}
+
+void buildSceneDOF(void)
+{
+	// Sets up all objects in the scene. This involves creating each object,
+	// defining the transformations needed to shape and position it as
+	// desired, specifying the reflectance properties (material and colours)
+	// and setting up textures where needed.
+	// Light sources must be defined, positioned, and their colour defined.
+	// All objects must be inserted in the object_list. All light sources
+	// must be inserted in the light_list.
+	//
+	// To create hierarchical objects:
+	//   Copy the transform matrix from the parent node to the child, and
+	//   apply any required transformations afterwards.
+	//
+	// NOTE: After setting up the transformations for each object, don't
+	//       forget to set up the inverse transform matrix!
+
+	///////////////////////////////////////
+	// TO DO: For Assignment 3 you have to use
+	//        the simple scene provided
+	//        here, but for Assignment 4 you
+	//        *MUST* define your own scene.
+	//        Part of your mark will depend
+	//        on how nice a scene you
+	//        create. Use the simple scene
+	//        provided as a sample of how to
+	//        define and position objects.
+	///////////////////////////////////////
+
+	// Simple scene for Assignment 3:
+	// Insert a couple of objects. A plane and two spheres
+	// with some transformations.
+
+	// Let's add a plane
+	// Note the plane is highly-reflective (rs=rg=.75) so we
+	// should see some reflections if all is done properly.
+	// Colour is close to cyan, and currently the plane is
+	// completely opaque (alpha=1). The refraction index is
+	// meaningless since alpha=1
+	Object3D *obj = new Plane(Material(0.05, 0.75, 0.05, 0.05, 0.5, 1, 2, 0.3),  // original
+		ColourRGB(0.55, 0.8, 0.75));
+	obj->scale(12, 12, 2);
+	obj->rotateZ(PI / 1.20);
+	obj->rotateX(PI / 2.25);
+	obj->translate(0, -3, 10);
+	// and store the inverse
+	// transform for this object!
+	//obj->loadNormalTexture("NormalMap.ppm");
+	objects.push_front(obj);    // Insert into object list
+
+								// Let's add a couple spheres
+	obj = new Sphere(Material(0.05, 0.8, 0.4, 0.35, 1, 1, 6, 0.3),
+		ColourRGB(0.5, 0.25, 0.5));
+	obj->scale(0.75, 0.5, 1.5);
+	obj->rotateY(PI / 3.5);
+	obj->translate(-0.5, 0.8, 10.0);
+	//    obj->loadTexture("Textures/webtreats_stone_5.ppm");
+	objects.push_front(obj);
+
+	/*obj = new Sphere(Material(0.05, 0.95, 0.35, 0.35, 1, 1, 6, 0.3),
+		ColourRGB(1.0, 0.25, 0.25));
+	obj->scale(0.75, 0.5, 1.5);
+	obj->rotateY(PI / 2.0);
+	obj->translate(-1.45, 1.1, 3.5);
+	//    obj->loadTexture("Textures/webtreats_stone_5.ppm");
+	objects.push_front(obj);*/
+
+	obj = new Sphere(Material(0.05, 0.95, 0.95, 0.75, 1, 1, 6, 0.3),
+		ColourRGB(0.75, 0.95, 0.55));
+	obj->scale(0.5, 2.0, 1.0);
+	obj->rotateZ(PI / 1.5);
+	obj->translate(1.75, 1.25, 5.0);
+	//    obj->loadTexture("Textures/webtreats_stone_4.ppm");
+	objects.push_front(obj);
+
+	//FOCAL PLANE
+	/*obj = new Plane(Material(0.05, 0.75, 0.05, 0.05, 0.5, 1, 2, 0.3),  // original
+		ColourRGB(1.0, .5, 1.0));
+	obj->scale(12, 12, 2);
+	//obj->rotateZ(PI / 1.20);
+	//obj->rotateX(PI / 2.25);
+	obj->translate(0, 0, 5);
+	objects.push_front(obj);*/
+
+	// Test OBJ
+	//    obj = new TriangleMesh("OBJ/table.obj",Material(0.05, 0.95, 0.35, 0.35, 1, 1, 6, 0.3),
+	//                                     ColourRGB(1.0, 0.25, 0.25));
+	//    //obj->scale(1.5, 1.5, 1.5);
+	//    //obj->translate(1, 0, 3.5);
+	//    obj->updateInverse();
+	//    objects.push_front(obj);
+
+	// Insert a single point light source.
+	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
+		Point3D(0.0, 15.5, -5.5, false));
+	lights.push_front(light);
+	//    AreaLightElement::addAreaLight(5, 5, Point3D(0, -1, 0, true), Point3D(1, 0, 0, true),
+	//                                   Point3D(0.0, 15.5, -5.5, false), 8, 8,
+	//                                   ColourRGB(0.95, 0.95, 0.95), lights);
+
+	// End of simple scene for Assignment 3
+	// Keep in mind that you can define new types of objects such as cylinders and parametric surfaces,
+	// or, you can create code to handle arbitrary triangles and then define objects as surface meshes.
+	//
+	// Remember: A lot of the quality of your scene will depend on how much care you have put into defining
+	//           the relflectance properties of your objects, and the number and type of light sources
+	//           in the scene.
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -253,7 +382,11 @@ int main(int argc, char *argv[])
     
     // Allocate memory for the new image
     im = new Image(sx, sx);
-    
+
+	Fractals::renderFractalImage(im, output_name, bounds);
+
+	/*
+
     ///////////////////////////////////////////////////
     // TO DO: You will need to implement several of the
     //        functions below. For Assignment 3, you can use
@@ -261,7 +394,7 @@ int main(int argc, char *argv[])
     //        for Assignment 4 you need to create your own
     //        *interesting* scene.
     ///////////////////////////////////////////////////
-     buildScene();		// Create a scene. This defines all the
+     buildSceneDOF();		// Create a scene. This defines all the
     // objects in the world of the raytracer
 //    buildStillLife();
     //////////////////////////////////////////
@@ -291,9 +424,9 @@ int main(int argc, char *argv[])
     
     // Setup the skybox
     Skybox *skybox = NULL;
-    skybox = new Skybox("Skyboxes/paint_lf.ppm", "Skyboxes/paint_rt.ppm",
-                        "Skyboxes/paint_dn.ppm", "Skyboxes/paint_up.ppm",
-                        "Skyboxes/paint_bk.ppm", "Skyboxes/paint_ft.ppm");
+   // skybox = new Skybox("Skyboxes/lagoon_lf.ppm", "Skyboxes/lagoon_rt.ppm",
+     //                   "Skyboxes/lagoon_dn.ppm", "Skyboxes/lagoon_up.ppm",
+       //                 "Skyboxes/lagoon_bk.ppm", "Skyboxes/lagoon_ft.ppm");
     
     fprintf(stderr,"View parameters:\n");
     fprintf(stderr,"Width=%f, f=%f\n", cam.wsize,cam.f);
@@ -308,15 +441,20 @@ int main(int argc, char *argv[])
     rayTracer.maxDepth = MAX_DEPTH;
     rayTracer.antialiasingEnabled = antialiasing;
     rayTracer.superSamplingResolution = 5;
-    rayTracer.glossyreflEnabled = true;
-    rayTracer.refractionEnabled = true;
+    rayTracer.glossyreflEnabled = false;
+    rayTracer.refractionEnabled = false;
+	rayTracer.blurEnabled = false;
+	rayTracer.dofEnabled = true;
+	rayTracer.fogEnabled = false;
     rayTracer.renderImage(cam, objects, lights, im, output_name, bounds);
     
+	//rayTracer.renderNoiseImage(im, output_name, bounds);
+	*/
     // Exit section. Clean up and return.
     delete im;
-    if (skybox != NULL) {
+   /* if (skybox != NULL) {
         delete skybox;
-    }
+    }*/
     while (!objects.empty()) {
         delete objects.front();
         objects.pop_front();

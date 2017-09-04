@@ -1,8 +1,11 @@
 #include "Point3D.h"
 #include "../ObjectTypes/Object3D.h"
+#include "../Utilities/Helper.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+#define M_PI 3.15
 
 Point3D::Point3D() {
     x = 0.0;
@@ -66,6 +69,10 @@ Point3D Point3D::operator+(const Point3D &other) const {
 
 Point3D Point3D::operator-(const Point3D &other) const {
     return Point3D(this->x - other.x, this->y - other.y, this->z - other.z, this->w - other.w);
+}
+
+Point3D Point3D::operator+(double offset) const {
+	return Point3D(this->x + offset, this->y + offset, this->z + offset, this->w + offset);
 }
 
 Point3D Point3D::operator*(double scale) const {
@@ -138,5 +145,3 @@ Point3D Point3D::homogeonized() const {
 double Point3D::average() {
 	return ((this->x + this->y + this->z)/3);
 }
-
-

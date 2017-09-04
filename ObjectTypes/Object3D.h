@@ -19,7 +19,8 @@ public:
     Transform3D invTransform;   // World -> Model
     
     Image textureImage;         // Structure holding the texture for this object
-    
+	Image normalImage;			// Structure holding the normals for this object
+
     bool isLightSource();   // Scene objects can be lights
     
     Object3D(const Material &material, const ColourRGB &colour);
@@ -50,8 +51,12 @@ public:
     
     Point3D originInWorld() const;
     
+	bool useNormalMap();
+
     // Load a texture image from file and assign it to this object
     void loadTexture(const char *filename);
+
+	void loadNormalTexture(const char *filename);
 };
 
 #endif
