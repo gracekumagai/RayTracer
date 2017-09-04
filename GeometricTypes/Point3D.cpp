@@ -1,6 +1,6 @@
 #include "Point3D.h"
 #include "../ObjectTypes/Object3D.h"
-#include "../Utilities/Helper.h"
+#include "../Utilities/Math.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

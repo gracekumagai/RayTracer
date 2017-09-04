@@ -3,37 +3,34 @@
 #include <float.h>
 #include "RayTracer.h"
 #include "Utilities/ProgressManager.h"
-#include "Utilities/Helper.h"
+#include "Utilities/Math.h"
 #include "ObjectTypes/PerlinNoise.h"
 
 void RayTracer::renderImage(View camera, list<Object3D*> objects, list<Light*> lights,
-                            Image *output, char * name, vector<int> bounds) {
-    // Store local copies of these that way we don't have to keep passing them around
-    // between the functions that do the actual ray tracing work
+                            Image *output, char * name, vector<int> bounds) 
+{
+    // Store local copies objects and lights to minimize their passing between functions
     this->objects = objects;
     this->lights = lights;
     
     int rows = bounds[1] - bounds[0];
     int cols = bounds[3] - bounds[2];
+
     // Object to keep track of the progress and give us some feedback
     ProgressManager progressManager(rows * cols);
     progressManager.startTimer();
 
     // Itterate through all the pixels and do the ray tracing
-#pragma omp parallel for schedule(dynamic)   // Multithread rendering
-    for (int i = 0; i < output->sx; i++)		// For each pixel in the image
+#pragma omp parallel for schedule(dynamic)		// Multithread rendering
+    for (int i = 0; i < output->sx; i++)
     {
         for (int j = 0; j < output->sy; j++)
         {
-            if (i < bounds[0] || i >= bounds[1] || j < bounds[2] || j >= bounds[3]) {
+            if (i < bounds[0] || i >= bounds[1] || j < bounds[2] || j >= bounds[3]) 
+			{
                 output->setColourAtPixel(i, j, ColourRGB(0, 0, 0));
                 continue;
             }
-            
-            ///////////////////////////////////////////////////////////////////
-            // TO DO - complete the code that should be in this loop to do the
-            //         raytracing!
-            ///////////////////////////////////////////////////////////////////
             
             // Find the current ray
             Point3D origin(0, 0, 0, false);
@@ -48,7 +45,8 @@ void RayTracer::renderImage(View camera, list<Object3D*> objects, list<Light*> l
             
             // Trace the pixel and store it in the image
             ColourRGB pixelColour = rayTrace(ray, camera.wsize / output->sx, targetPixel);
-            if (pixelColour.outOfBounds()) {
+            if (pixelColour.outOfBounds()) 
+			{
                 pixelColour.normalize();
             }
             output->setColourAtPixel(i, j, pixelColour);
@@ -61,13 +59,17 @@ void RayTracer::renderImage(View camera, list<Object3D*> objects, list<Light*> l
     output->outputImage(name);
 }
 
-ColourRGB RayTracer::rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel) {
+ColourRGB RayTracer::rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel) 
+{
     ColourRGB pixelColour(0, 0, 0);
     
-    if (antialiasingEnabled) {
-        double subPixelSize = pixelSize / superSamplingResolution;
-        for (int i = 0; i < superSamplingResolution; i++) {
-            for (int j = 0; j < superSamplingResolution; j++) {
+    if (myAntialiasingEnabled) 
+	{
+        double subPixelSize = pixelSize / mySuperSamplingResolution;
+        for (int i = 0; i < mySuperSamplingResolution; i++) 
+		{
+            for (int j = 0; j < mySuperSamplingResolution; j++) 
+			{
                 // Compute a random x,y offset within the subPixelSize
                 Point3D offset(drand48()*subPixelSize + i*subPixelSize - 0.5*pixelSize,
                                drand48()*subPixelSize + j*subPixelSize + 0.5*pixelSize,
@@ -78,27 +80,19 @@ ColourRGB RayTracer::rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel) 
                 
                 // Cast the ray. We divide by the number of super-samples we have
                 // in order to compute the average colour over all rays for this pixel
-                pixelColour += rayTraceRecursive(subRay, maxDepth) *
-                        (1.0 / (superSamplingResolution*superSamplingResolution));
+                pixelColour += rayTraceRecursive(subRay, myMaxDepth) *
+                        (1.0 / (mySuperSamplingResolution*mySuperSamplingResolution));
             }
         }
     }
     
-	else if (dofEnabled) {
-		Point3D focalPoint = ray.rayPosition(4.0);
-		for (int i = 0; i < dofResolution; i++) {
-			/*double theta = randDouble(0, 2 * 3.14);
-			double r = randDouble(0, apeture);
-
-			Point3D offset = polarToCartesian2D(theta, r);
-			Point3D newOrigin = ray.origin;
-			newOrigin.x += offset.x * pixelSize;
-			newOrigin.y += offset.y * pixelSize;
-
-			Ray3D subRay = Ray3D(newOrigin, focalPoint - newOrigin).normalized();*/
-
-			float du = randDouble(-b, b);
-			float dv = randDouble(-b, b);
+	else if (myDOFEnabled) 
+	{
+		Point3D focalPoint = ray.rayPosition(myFocalLength);
+		for (int i = 0; i < myDOFResolution; i++) 
+		{
+			float du = randDouble(-myB, myB);
+			float dv = randDouble(-myB, myB);
 
 			Point3D newOrigin = ray.origin;
 			newOrigin.x += du;
@@ -106,29 +100,25 @@ ColourRGB RayTracer::rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel) 
 
 			Point3D newDirection = focalPoint - newOrigin;
 			Ray3D subRay = Ray3D(newOrigin, newDirection.normalized());
-			pixelColour += rayTraceRecursive(subRay, maxDepth) * (1.0 / dofResolution);
+			pixelColour += rayTraceRecursive(subRay, myMaxDepth) * (1.0 / myDOFResolution);
 
 		}
 	}
 
     else {
         ray = ray.normalized();
-        pixelColour = rayTraceRecursive(ray, maxDepth);
+        pixelColour = rayTraceRecursive(ray, myMaxDepth);
     }
     
     return pixelColour;
 }
 
-ColourRGB RayTracer::rayTraceRecursive(const Ray3D &ray, int depth, Object3D *excludedSource) {
-    ///////////////////////////////////////////////////////
-    // TO DO: Complete this function. Refer to the notes
-    // if you are unsure what to do here.
-    ///////////////////////////////////////////////////////
-    
+ColourRGB RayTracer::rayTraceRecursive(const Ray3D &ray, int depth, Object3D *excludedSource) 
+{   
     Intersection firstHit = findFirstHit(ray, excludedSource);
     if (firstHit.none) {
-        if (skybox != NULL) {
-            return skybox->colourInDirection(ray.direction);
+        if (mySkyBox != NULL) {
+            return mySkyBox->colourInDirection(ray.direction);
         }
         return ColourRGB(0, 0, 0);
     }
@@ -137,10 +127,6 @@ ColourRGB RayTracer::rayTraceRecursive(const Ray3D &ray, int depth, Object3D *ex
     }
     
 	ColourRGB colour= shade(firstHit, ray, depth);
-	if (fogEnabled)
-	{
-		colour = applyFog(colour, firstHit.point.z);
-	}
 
     return colour;
 }
@@ -153,76 +139,33 @@ ColourRGB RayTracer::shade(Intersection &intersection, const Ray3D &ray, int dep
 	ColourRGB resRed(0.0, 0.0, 0.0);
 	ColourRGB resGreen(0.0, 0.0, 0.0);
 	ColourRGB resBlue(0.0, 0.0, 0.0);
-
-	double r = 1.0;
-    //////////////////////////////////////////////////////////////
-    // TO DO: Implement this function. Refer to the notes for
-    // details about the shading model.
-    //////////////////////////////////////////////////////////////
     
     res += phongModel(intersection, ray);
   
-	if (depth > 0) {
+	if (depth > 0) 
+	{
 		refl += reflection(intersection, ray, depth - 1);
-		if (refractionEnabled) {
-			/*double n1 = intersection.insideObject ? intersection.material.refractionIndex : 1.0;
-			double n2 = intersection.insideObject ? 1.0 : intersection.material.refractionIndex;
-			Point3D d = ray.direction;
-			Point3D n = intersection.normal;
-
-			double r0 = (n1 - n2) / (n1 + n2);
-			r0 *= r0;
-
-			double r = 1.0;
-			double inside = totalInternalReflection(intersection, ray, intersection.material.refractionIndex);
-
-			if (n1 <= n2)
-			{
-				double x = 1 + d.dot(n);
-				x = x*x*x*x*x;
-				r = r0 + (1 - r0)*x;
-			}
-			else if (inside > 0 && n1 > n2)
-			{
-				r = r0 + (1 - r0)*sqrt(inside);
-			}
-			else
-			{
-				r = 1.0;
-			}*/
-			
+	
+		if (myRefractionEnabled) 
+		{	
 			refract += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex);
 
-			//			resRed += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex + 0.1);
-				//		resGreen += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex);
-					//	resBlue += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex - 0.1);
+			/* // Hard Coded Chromatic Aberration
+			resRed += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex + 0.1);
+			resGreen += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex);
+			resBlue += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex - 0.1);
 
-						//res.red += resRed.red*0.8 + resGreen.red*.1 + resBlue.red*.1;
-					//	res.green += resRed.green*0.1 + resGreen.green*.8 + resBlue.green*.1;
-					//	res.blue += resRed.blue*0.1 + resGreen.blue*.1 + resBlue.blue*.8;
+			res.red += resRed.red*0.8 + resGreen.red*.1 + resBlue.red*.1;
+			res.green += resRed.green*0.1 + resGreen.green*.8 + resBlue.green*.1;
+			res.blue += resRed.blue*0.1 + resGreen.blue*.1 + resBlue.blue*.8;*/
 		}
 	}
-	//res += refl*r + refract*(1-r);
 	res += refl + refract;
-	return res;//res + refl*r + refract*(1-r);
+	return res;
 }
 
 Intersection RayTracer::findFirstHit(const Ray3D &ray, Object3D *excludedSource) {
 	// Find the closest intersection between the ray and any objects in the scene.
-	// It returns:
-	//   - The lambda at the intersection (or < 0 if no intersection)
-	//   - The pointer to the object at the intersection (so we can evaluate the colour in the shading function)
-	//   - The location of the intersection point (in p)
-	//   - The normal at the intersection point (in n)
-	//
-	// Os is the 'source' object for the ray we are processing, can be NULL, and is used to ensure we don't 
-	// return a self-intersection due to numerical errors for recursive raytrace calls.
-	//
-
-	/////////////////////////////////////////////////////////////
-	// TO DO: Implement this function. See the notes for
-	// reference of what to do in here
-	/////////////////////////////////////////////////////////////
     
 	double closestLambda = DBL_MAX;
 	Intersection closestIntersection;
@@ -233,7 +176,8 @@ Intersection RayTracer::findFirstHit(const Ray3D &ray, Object3D *excludedSource)
         Object3D *object = *it;
         if (excludedSource == object) continue;
 		Intersection intersection = object->intersect(ray);
-		if (!intersection.none) {
+		if (!intersection.none) 
+		{
 			if (intersection.lambda < closestLambda) {
 				closestLambda = intersection.lambda;
 				closestIntersection = intersection;
@@ -259,7 +203,8 @@ ColourRGB RayTracer::phongModel(const Intersection &intersection, const Ray3D &r
         Light *light = *it;
         Point3D lightLocation = light->getLocation();
         
-        if (!isInShadow(intersection, lightLocation)) {
+        if (!isInShadow(intersection, lightLocation)) 
+		{
             // Note: Light have the same Ia, Id, and Is,
             // which for every colour component is equal
             // to the light's magnitude of that colour.
@@ -267,14 +212,14 @@ ColourRGB RayTracer::phongModel(const Intersection &intersection, const Ray3D &r
             //      Is.b = light.blue, etc.
             
             //Diffuse component
-            Point3D s = (lightLocation - intersection.point).normalized();    // light direction
+            Point3D s = (lightLocation - intersection.point).normalized();			// light direction
             double n_dot_s = (intersection.normal).dot(s);
             double mag_diffuse = (0 < n_dot_s)?n_dot_s:0;
             double diffuse = (intersection.material.diffuse)*mag_diffuse;
             ColourRGB diffuseColour = light->getColour() * diffuse;
             
             //Specular component
-            Point3D r = -1*s + 2*intersection.normal*(s.dot(intersection.normal));    // reflection direction
+            Point3D r = -1*s + 2*intersection.normal*(s.dot(intersection.normal));	// reflection direction
             Point3D b = -1 * ray.direction;
             double mag_spec = (0 < r.dot(b))?r.dot(b):0;
             mag_spec = pow(mag_spec, intersection.material.shinyness);
@@ -300,9 +245,6 @@ bool RayTracer::isInShadow(const Intersection &intersection, const Point3D &ligh
     
     // Bias the ray's origin slightly away from the object
     // in order to avoid errors from numerical precision.
-    // We can't simply rely on the source object here, because
-    // it's perfectly legal for an object to be casting itself
-    // partly in shadow (e.g. the backside of an object)
     shadowRay = shadowRay.bias(intersection.normal);
     
     // Walk through the objects and return that there is a shadow
@@ -329,9 +271,11 @@ ColourRGB RayTracer::reflection(const Intersection &intersection, const Ray3D &r
     // of the colour traced by these samples. The weighted average is due to the fact
     // that rays which deviated larger should have less contribution (similar to spectral in phong).
     // Weights are equal to deflected.dot(original))^shinyness.
-	if (glossyreflEnabled) {
+	if (myGlossyReflEnabled) 
+	{
         double totalEnergy = 0;
-        for (int i = 0; i < glossyResolution; i++) {
+        for (int i = 0; i < myGlossyResolution; i++) 
+		{
             Ray3D reflectionRay(intersection.point,
                                 r.randomlyPerturb(intersection.normal, intersection.material.roughness));
             reflectionRay = reflectionRay.bias(intersection.normal);
@@ -339,11 +283,13 @@ ColourRGB RayTracer::reflection(const Intersection &intersection, const Ray3D &r
             reflectedColour += rayTraceRecursive(reflectionRay, depth, excludedSource) * energy;
             totalEnergy += energy;
         }
-        if (totalEnergy > 0) {
+        if (totalEnergy > 0) 
+		{
             reflectedColour = reflectedColour * (1/totalEnergy);
         }
 	}
-    else {
+    else 
+	{
         Ray3D reflectionRay(intersection.point, r);
         reflectionRay = reflectionRay.bias(intersection.normal);
         reflectedColour = rayTraceRecursive(reflectionRay, depth);
@@ -356,7 +302,8 @@ ColourRGB RayTracer::refraction(const Intersection &intersection, const Ray3D &r
 	ColourRGB refractedColour(0, 0, 0);
 
 	// If no transparency, don't even bother computing anything
-    if (intersection.material.opacity >= 1.0) {
+    if (intersection.material.opacity >= 1.0) 
+	{
         return ColourRGB(0.0, 0.0, 0.0);
     }
     
@@ -368,16 +315,19 @@ ColourRGB RayTracer::refraction(const Intersection &intersection, const Ray3D &r
     Point3D n = intersection.normal;
     
 	double inside = totalInternalReflection(intersection, ray, refractionIndex);
-    if (inside < 0) {   // total internal reflection
+    if (inside < 0) // total internal reflection
+	{
 		return reflection(intersection, ray, depth) * (1.0 / intersection.material.global);
 	}
 	Point3D t = n1 / n2 * (d - n*(d.dot(n))) - n * sqrt(inside);
 
 	// Randomly perturb the ray in a number of samples and compute a weighted average
 	// of the colour traced by these samples
-	if (blurEnabled && intersection.material.roughness > 0.0 && !intersection.insideObject) {
+	if (myBlurEnabled && intersection.material.roughness > 0.0 && !intersection.insideObject) 
+	{
 		double totalEnergy = 0;
-		for (int i = 0; i < blurResolution; i++) {
+		for (int i = 0; i < myBlurResolution; i++) 
+		{
 			Ray3D refractedRay(intersection.point,
 				t.randomlyPerturb(-1 * n, intersection.material.roughness));
 			refractedRay = refractedRay.bias(-1 * n);
@@ -385,11 +335,13 @@ ColourRGB RayTracer::refraction(const Intersection &intersection, const Ray3D &r
 			refractedColour += rayTraceRecursive(refractedRay, depth) * energy;
 			totalEnergy += energy;
 		}
-		if (totalEnergy > 0) {
+		if (totalEnergy > 0) 
+		{
 			refractedColour = refractedColour * (1 / totalEnergy);
 		}
 	}
-	else {
+	else 
+	{
 		Ray3D refractedRay(intersection.point, t);
 		refractedRay = refractedRay.bias(-1 * n);
 		refractedColour = rayTraceRecursive(refractedRay, depth);
@@ -422,8 +374,8 @@ void RayTracer::renderNoiseImage(Image *output, char * name, vector<int> bounds)
 	progressManager.startTimer();
 
 	// Itterate through all the pixels and do the ray tracing
-#pragma omp parallel for schedule(dynamic)   // Multithread rendering
-	for (int i = 0; i < output->sx; i++)		// For each pixel in the image
+#pragma omp parallel for schedule(dynamic)		// Multithread rendering
+	for (int i = 0; i < output->sx; i++)		
 	{
 		for (int j = 0; j < output->sy; j++)
 		{
@@ -449,13 +401,4 @@ void RayTracer::renderNoiseImage(Image *output, char * name, vector<int> bounds)
 	}
 	// Output rendered image
 	output->outputImage(name);
-}
-
-ColourRGB RayTracer::applyFog(ColourRGB colour, double distance)
-{
-	double fogIntensity = 1.0 - exp(-distance * falloff);
-	fprintf(stderr, "fogIntensity: %f\n", fogIntensity);
-
-	ColourRGB fogColour = ColourRGB(0.5, 0.6, 0.7);
-	return ColourRGB::lerp(colour, fogColour, fogIntensity);
 }

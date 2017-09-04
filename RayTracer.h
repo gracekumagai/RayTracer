@@ -24,43 +24,16 @@ class RayTracer {
     // the ray and any scene objects, calls the shading function to
     // determine the colour at this intersection, and returns the
     // colour.
-    //
-    // Since Ray-Tracing is recursive, this is the entry point that simply
-    // calls the recursive version with the appropriate starting parameters.
-    //
-    // pixelSize is used if antialiasing is enabled
     ColourRGB rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel);
     
     // Recursive version of rayTrace. rayTrace is basically the public interface
     // that delegates to this function with the correct parameters
-    //
-    // source is needed for recursive calls to ensure that findFirstHit will
-    // not simply return a self-intersection due to numerical
-    // errors. For the top level call, source should be NULL. And thereafter
-    // it will correspond to the object from which the recursive
-    // ray originates.
     ColourRGB rayTraceRecursive(const Ray3D &ray, int depth, Object3D *excludedSource = NULL);
     
-    // This function implements the shading model as described in lecture. It takes
-    // - An intersection data model that contains all necessary information for shading
-    // - The ray (needed to determine the reflection direction to use for the global component, as well as for
-    //   the Phong specular component)
-    // - The current recursion depth
-    //
-    // Returns:
-    // - The colour for this ray
-    //
+    // Determines the colour for the input ray
     ColourRGB shade(Intersection &intersection, const Ray3D &ray, int depth);
     
-    
-    // Find the closest intersection between the ray and any objects in the scene.
-    // It returns:
-    //   - An intersection data model that contains all necessary information for shading
-    //
-    // source is the 'source' object for the ray we are processing, can be NULL,
-    // and is used to ensure we don't
-    // return a self-intersection due to numerical errors for recursive raytrace calls.
-    //
+    // Finds the closest intersection between the ray and any objects in the scene.
     Intersection findFirstHit(const Ray3D &ray, Object3D *excludedSource);
     
     ColourRGB phongModel(const Intersection &intersection, const Ray3D &ray);
@@ -76,26 +49,22 @@ class RayTracer {
 	ColourRGB applyFog(ColourRGB colour, double distance);
 
 public:
-    bool antialiasingEnabled = false;
-    bool glossyreflEnabled = false;
-    bool refractionEnabled = false;
-	bool blurEnabled = false;
-    int maxDepth = 3;
-    int superSamplingResolution = 5;
-    int glossyResolution = 8;
-	int blurResolution = 8;
-    Skybox *skybox = NULL;
+    bool myAntialiasingEnabled = false;
+    bool myGlossyReflEnabled = false;
+    bool myRefractionEnabled = false;
+	bool myBlurEnabled = false;
+    int myMaxDepth = 3;
+    int mySuperSamplingResolution = 5;
+    int myGlossyResolution = 8;
+	int myBlurResolution = 8;
+    Skybox *mySkyBox = NULL;
 
 	//Depth of field
-	bool dofEnabled = false;
-	double focalLength = 2.0;
-	double apeture = 0.0078;
-	double b = 0.5;
-	int dofResolution = 500;
-
-	//Fog
-	bool fogEnabled = false;
-	double falloff = 1.0;
+	bool myDOFEnabled = false;
+	double myFocalLength = 4.0;
+	double myApeture = 0.0078;
+	double myB = 0.5;
+	int myDOFResolution = 500;
     
     void renderImage(View camera, list<Object3D*> objects, list<Light*> lights,
                      Image *output, char * name, vector<int> bounds);

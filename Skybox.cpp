@@ -3,16 +3,18 @@
 
 Skybox::Skybox(const char *left, const char *right,
                const char *bottom, const char *top,
-               const char *back, const char *front) {
-    Image::readPPMimage(left, &(this->left));
-    Image::readPPMimage(right, &(this->right));
-    Image::readPPMimage(bottom, &(this->bottom));
-    Image::readPPMimage(top, &(this->top));
-    Image::readPPMimage(back, &(this->back));
-    Image::readPPMimage(front, &(this->front));
+               const char *back, const char *front) 
+{
+    Image::readPPMimage(left, &(this->myLeft));
+    Image::readPPMimage(right, &(this->myRight));
+    Image::readPPMimage(bottom, &(this->myBottom));
+    Image::readPPMimage(top, &(this->myTop));
+    Image::readPPMimage(back, &(this->myBack));
+    Image::readPPMimage(front, &(this->myFront));
 }
 
-ColourRGB Skybox::colourInDirection(Point3D direction) {
+ColourRGB Skybox::colourInDirection(Point3D direction) 
+{
     bool isXPos = direction.x > 0;
     bool isYPos = direction.y > 0;
     bool isZPos = direction.z > 0;
@@ -23,50 +25,55 @@ ColourRGB Skybox::colourInDirection(Point3D direction) {
     double maxAxis, uc, vc;
     Image *image;
     
-    // Positive x
-    if (isXPos && absX >= absY && absX >= absZ) {
+    // POSITIVE x
+    if (isXPos && absX >= absY && absX >= absZ) 
+	{
         // u (0 to 1) goes from +z to -z
         // v (0 to 1) goes from -y to +y
         maxAxis = absX;
         uc = -direction.z;
         vc = direction.y;
-        image = &(this->front);
+        image = &(this->myFront);
     }
     // NEGATIVE X
-    else if (!isXPos && absX >= absY && absX >= absZ) {
+    else if (!isXPos && absX >= absY && absX >= absZ) 
+	{
         // u (0 to 1) goes from -z to +z
         // v (0 to 1) goes from -y to +y
         maxAxis = absX;
         uc = direction.z;
         vc = direction.y;
-        image = &(this->back);
+        image = &(this->myBack);
     }
     // POSITIVE Y
-    else if (isYPos && absY >= absX && absY >= absZ) {
+    else if (isYPos && absY >= absX && absY >= absZ) 
+	{
         // u (0 to 1) goes from -x to +x
         // v (0 to 1) goes from +z to -z
         maxAxis = absY;
         uc = direction.x;
         vc = -direction.z;
-        image = &(this->top);
+        image = &(this->myTop);
     }
     // NEGATIVE Y
-    else if (!isYPos && absY >= absX && absY >= absZ) {
+    else if (!isYPos && absY >= absX && absY >= absZ) 
+	{
         // u (0 to 1) goes from -x to +x
         // v (0 to 1) goes from -z to +z
         maxAxis = absY;
         uc = direction.x;
         vc = direction.z;
-        image = &(this->bottom);
+        image = &(this->myBottom);
     }
     // POSITIVE Z
-    else if (isZPos && absZ >= absX && absZ >= absY) {
+    else if (isZPos && absZ >= absX && absZ >= absY) 
+	{
         // u (0 to 1) goes from -x to +x
         // v (0 to 1) goes from -y to +y
         maxAxis = absZ;
         uc = direction.x;
         vc = direction.y;
-        image = &(this->left);
+        image = &(this->myLeft);
     }
     // NEGATIVE Z
     else {
@@ -75,7 +82,7 @@ ColourRGB Skybox::colourInDirection(Point3D direction) {
         maxAxis = absZ;
         uc = -direction.x;
         vc = direction.y;
-        image = &(this->right);
+        image = &(this->myRight);
     }
     
     // Convert range from -1 to 1 to 0 to 1

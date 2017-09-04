@@ -121,11 +121,12 @@
     <ClCompile Include="ObjectTypes\Spectrum.cpp" />
     <ClCompile Include="RayTracer.cpp" />
     <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="Utilities\Helper.cpp" />
+    <ClCompile Include="Utilities\Math.cpp" />
     <ClCompile Include="utilities\ProgressManager.cpp" />
     <ClCompile Include="View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BuildScene.h" />
     <ClInclude Include="geometrictypes\Point3D.h" />
     <ClInclude Include="geometrictypes\svdDynamic.h" />
     <ClInclude Include="geometrictypes\Transform3D.h" />
@@ -149,7 +150,7 @@
     <ClInclude Include="ObjectTypes\Spectrum.h" />
     <ClInclude Include="RayTracer.h" />
     <ClInclude Include="Skybox.h" />
-    <ClInclude Include="Utilities\Helper.h" />
+    <ClInclude Include="Utilities\Math.h" />
     <ClInclude Include="utilities\ProgressManager.h" />
     <ClInclude Include="View.h" />
   </ItemGroup>

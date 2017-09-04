@@ -1,9 +1,9 @@
 #ifndef Spectrum_h
 #define Spectrum_h
-
+/*
 #include <stdio.h>
 #include "../GeometricTypes/Point3D.h"
-#include "../Utilities/Helper.h"
+#include "../Utilities/Math.h"
 
 static const int sampledLambdaStart = 400;
 static const int sampledLambdaEnd = 700;
@@ -261,7 +261,7 @@ inline Spectrum Lerp(float t, const Spectrum &s1, const Spectrum &s2)
 	return (1.0 - t) * s1 + t * s2;
 }
 
-/*
+//
 // Spectrum Inline Functions
 template <int nSpectrumSamples>
 inline CoefficientSpectrum<nSpectrumSamples> Pow(const CoefficientSpectrum<nSpectrumSamples> &s, Float e) 

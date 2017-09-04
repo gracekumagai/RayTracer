@@ -3,7 +3,8 @@
 #include <cmath>
 #include <vector>
 
-namespace {
+namespace 
+{
 	const int frames = 10000000;
 	const int iters = 1000;
 	const int skipIters = 10;

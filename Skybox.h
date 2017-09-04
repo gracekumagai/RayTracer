@@ -4,8 +4,9 @@
 #include "ObjectTypes/Image.h"
 #include "GeometricTypes/Point3D.h"
 
-class Skybox {
-    Image left, right, bottom, top, back, front;
+class Skybox 
+{
+    Image myLeft, myRight, myBottom, myTop, myBack, myFront;
     
 public:
     Skybox(const char *left, const char *right,

@@ -1,4 +1,4 @@
-#include "Spectrum.h"
+/*#include "Spectrum.h"
 #include <algorithm>
 
 using namespace std;
@@ -70,3 +70,4 @@ double AverageSpectrumSamples(const float *lambda, const double *vals, int n, do
 
 
 }
+*/

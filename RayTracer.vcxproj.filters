@@ -96,9 +96,6 @@
     <ClCompile Include="objecttypes\objectsubclasses\OBJ_Loader.cpp">
       <Filter>ObjectTypes\ObjectSubclasses</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\Helper.cpp">
-      <Filter>Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="utilities\ProgressManager.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="ObjectTypes\Spectrum.cpp">
       <Filter>ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Math.cpp">
+      <Filter>Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +176,6 @@
     <ClInclude Include="objecttypes\objectsubclasses\TriangleMesh.h">
       <Filter>ObjectTypes\ObjectSubclasses</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\Helper.h">
-      <Filter>Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="utilities\ProgressManager.h">
       <Filter>Utilities</Filter>
     </ClInclude>
@@ -190,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="ObjectTypes\Spectrum.h">
       <Filter>ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Math.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

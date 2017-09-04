@@ -7,6 +7,9 @@
 using namespace std;
 
 class Fractals {
+
+	// From Peter de Jong Attractors'
+
 public:
 	static void renderFractalImage(Image *output, char * name, vector<int> bounds);
 };
