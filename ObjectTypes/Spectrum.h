@@ -1,274 +1,111 @@
-#ifndef Spectrum_h
-#define Spectrum_h
-/*
+//#ifndef Spectrum_h
+//#define Spectrum_h
+
 #include <stdio.h>
 #include "../GeometricTypes/Point3D.h"
 #include "../Utilities/Math.h"
+/*
+namespace Spectrum
+{
+	enum SpectrumType { SPECTRUM_REFLECTANCE, SPECTRUM_ILLUMINANT };
 
-static const int sampledLambdaStart = 400;
-static const int sampledLambdaEnd = 700;
-static const int nSpectralSamples = 30;
+	static const int sampledLambdaStart = 400;
+	static const int sampledLambdaEnd = 700;
+	static const int nSpectralSamples = 30;
 
-static const int nCIESamples = 471;
-extern const float CIE_X[nCIESamples];
-extern const float CIE_Y[nCIESamples];
-extern const float CIE_Z[nCIESamples];
-extern const float CIE_lambda[nCIESamples];
+	// Data
+	static const int nCIESamples = 471;
+	extern const double CIE_X[nCIESamples];
+	extern const double CIE_Y[nCIESamples];
+	extern const double CIE_Z[nCIESamples];
+	extern const double CIE_lambda[nCIESamples];
+	static const double CIE_Y_integral = 106.856895;
+	static const int nRGB2SpectSamples = 32;
+	extern const double RGB2SpectLambda[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectWhite[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectCyan[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectMagenta[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectYellow[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectRed[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectGreen[nRGB2SpectSamples];
+	extern const double RGBRefl2SpectBlue[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectWhite[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectCyan[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectMagenta[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectYellow[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectRed[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectGreen[nRGB2SpectSamples];
+	extern const double RGBIllum2SpectBlue[nRGB2SpectSamples];
 
-extern bool SpectrumSamplesSorted(const double *lambda, const double *vals, int n);
-extern void SortSpectrumSamples(double *lambda, double *vals, int n);
-extern double AverageSpectrumSamples(const double *lambda, const double *vals, int n, double lambdaStart, double lambdaEnd);
+	inline void XYZToRGB(const double xyz[3], double rgb[3]);
+	inline void RGBToXYZ(const double rgb[3], double xyz[3]);
 
-template <int nSamples> class CoefficientSpectrum {
+	template <int nSamples>
+	class CoefficientSpectrum;
+
+	class SampledSpectrum;
+}
+
+template <int nSamples>
+class Spectrum::CoefficientSpectrum
+{
 public:
+	CoefficientSpectrum(double v = 0.0);
+	
+	CoefficientSpectrum &operator+=(const CoefficientSpectrum &s2);
+	CoefficientSpectrum operator+(const CoefficientSpectrum &s2) const; 
+	
+	CoefficientSpectrum &operator*=(const CoefficientSpectrum &s2);
+	CoefficientSpectrum operator*(const CoefficientSpectrum &s2) const;
+	
+	CoefficientSpectrum &operator*=(double a);
+	CoefficientSpectrum operator*(double a) const;
 
-	CoefficientSpectrum(double v = 0.0f)
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			c[i] = v;
-		}
-	}
+	friend inline CoefficientSpectrum operator*(double a, const CoefficientSpectrum &s);
 
-	CoefficientSpectrum& operator+=(const CoefficientSpectrum &s2)
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			c[i] += s2.c[i];
-		}
-		return *this;
-	}
+	bool isBlack() const;
+	bool hasNaNs() const;
 
-	CoefficientSpectrum operator+(const CoefficientSpectrum &s2) const
-	{
-		CoefficientSpectrum ret = *this;
-		for (int i = 0; i < nSamples; ++i)
-			ret.c[i] += s2.c[i];
-		return ret;
-	}
+	CoefficientSpectrum Sqrt(const CoefficientSpectrum &s);
+	CoefficientSpectrum Clamp(double low = 0, double high = INFINITY) const;
 
-	CoefficientSpectrum& operator-=(const CoefficientSpectrum &s2)
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			c[i] -= s2.c[i];
-		}
-		return *this;
-	}
-
-	CoefficientSpectrum operator-(const CoefficientSpectrum &s2) const
-	{
-		CoefficientSpectrum ret = *this;
-		for (int i = 0; i < nSamples; ++i)
-			ret.c[i] -= s2.c[i];
-		return ret;
-	}
-
-	CoefficientSpectrum& operator*=(const CoefficientSpectrum &s2)
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			c[i] *= s2.c[i];
-		}
-		return *this;
-	}
-
-	CoefficientSpectrum operator*(const CoefficientSpectrum &s2) const
-	{
-		CoefficientSpectrum ret = *this;
-		for (int i = 0; i < nSamples; ++i)
-			ret.c[i] *= s2.c[i];
-		return ret;
-	}
-
-	CoefficientSpectrum& operator/=(const CoefficientSpectrum &s2)
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			c[i] /= s2.c[i];
-		}
-		return *this;
-	}
-
-	CoefficientSpectrum operator/(const CoefficientSpectrum &s2) const
-	{
-		CoefficientSpectrum ret = *this;
-		for (int i = 0; i < nSamples; ++i)
-			ret.c[i] /= s2.c[i];
-		return ret;
-	}
-
-	bool operator==(const CoefficientSpectrum &lh, const CoefficientSpectrum &rh) const
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			if (lh.c[i] != rh.c[i])
-				return false;
-		}
-		return true;
-	}
-
-	bool operator!=(const CoefficientSpectrum &sp) const
-	{
-		return !(*this == sp)
-	}
-
-	bool isBlack() const
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			if (c[i] != 0.0)
-				return false;
-			return true;
-		}
-	}
-
-	friend CoefficientSpectrum Sqrt(const CoefficientSpectrum &s)
-	{
-		CoefficientSpectrum ret;
-		for (int i = 0; i < nSamples; ++i)
-		{
-			ret.c[i] = sqrt(s.c[i]);
-		}
-		return ret;
-	}
-
-	template <int n>
-	friend CoefficientSpectrum Pow(const CoefficientSpectrum &s, double e);
-
-	friend CoefficientSpectrum Exp(const CoefficientSpectrum &s)
-	{
-		CoefficientSpectrum ret;
-		for (int i = 0; i < nSamples; ++i)
-		{
-			ret.c[i] = exp(s.c[i]);
-		}
-		return ret;
-	}
-
-	CoefficientSpectrum Clamp(double low = 0.0, double high = Infinity) const
-	{
-		CoefficientSpectrum ret;
-		for (int i = 0; i < nSamples; ++i)
-		{
-			ret.c[i] = Utility::Clamp(c[i], low, high);
-		}
-		return ret;
-	}
-
-	bool HasNaNs() const
-	{
-		for (int i = 0; i < nSamples; ++i)
-		{
-			if (isnan(c[i]))
-				return true;
-			return false;
-		}
-	}
 protected:
-	double c[nSamples];
+	double myC[nSamples];
 };
 
-class SampledSpectrum : public CoefficientSpectrum<nSpectralSamples>
+class Spectrum::SampledSpectrum : public CoefficientSpectrum<nSpectralSamples>
 {
 public:
-	SampledSpectrum(double v = 0.0)
-	{
-		for (int i = 0; i < nSpectralSamples; ++i)
-		{
-			c[i] = v;
-		}
-	}
-	
-	static SampledSpectrum FromSampled(const double *lambda, const double *v, int n)
-	{
-		// Takes array of SPD sample values v at given wavelengths lambda to define
-		// piecewise linear function representing the SPD
-		
-		if (!SpectrumSamplesSorted(lambda, v, n))
-		{
-			vector<double> slambda(&lambda[0], &lambda[n]);
-			vector<double> sv(&v[0], &v[n]);
-			SortSpectrumSamples(&slambda[0], &sv[0], n);
-			return FromSampled(&slambda[0], &sv[0], n);
-		}
+	SampledSpectrum(double v = 0.0);
+	SampledSpectrum Clamp(double low = 0, double high = INFINITY) const;
 
-		SampledSpectrum r;
-		for (int i = 0; i < nSpectralSamples; ++i)
-		{
-			double lambda0 = Lerp(double(i) / double(nSpectralSamples),
-				sampledLambdaStart, sampledLambdaEnd);
-			double lambda1 = Lerp(double(i + 1) / double(nSpectralSamples),
-				sampledLambdaStart, sampledLambdaEnd);
-			r.c[i] = AverageSpectrumSamples(lambda, v, n, lambda0, lambda1);
-		}
-		return r;
-	}
+	static SampledSpectrum fromSampled(const double *lambda, const double *v, int n);
 
-	static void Init()
-	{
-		// Compute XYZ matching functions for SampledSpectrum
-		for (int i = 0; i < nSpectralSamples; ++i)
-		{
-			double wl0 = Lerp(double(i) / double(nSpectralSamples),
-				sampledLambdaStart, sampledLambdaEnd);
-			double wl1 = Lerp(double(i + 1) / double(nSpectralSamples),
-				sampledLambdaStart, sampledLambdaEnd);
-			X.c[i] = AverageSpectrumSamples(CIE_lambda, CIE_X, nCIESamples,
-				wl0, wl1);
-			Y.c[i] = AverageSpectrumSamples(CIE_lambda, CIE_Y, nCIESamples,
-				wl0, wl1);
-			Z.c[i] = AverageSpectrumSamples(CIE_lambda, CIE_Z, nCIESamples,
-				wl0, wl1);
-			yint += Y.c[i];
-		}
-		// Compute RGB to spectrum functions for SampledSpectrum
-	}
+	static void Init();
 
-	void ToXYZ(double xyz[3]) const
-	{
-		xyz[0] = xyz[1] = xyz[2] = 0.0;
-		for (int i = 0; i < nSpectralSamples; ++i)
-		{
-			xyz[0] += X.c[i] * c[i];
-			xyz[1] += Y.c[i] * c[i];
-			xyz[2] += Z.c[i] * c[i];
-		}
-		xyz[0] /= yint;
-		xyz[1] /= yint;
-		xyz[2] /= yint;
-	}
+	void toXYZ(double xyz[3]) const;
+	void toRGB(double rgb[3]) const;
+	SampledSpectrum fromRGB(const double rgb[3], SpectrumType type);
 
-	double ToY() const
-	{
-		float yy = 0.0;
-		for (int i = 0; i < nSpectralSamples; ++i)
-		{
-			yy += Y.c[i] * c[i];
-		}
-		return yy / yint;
-	}
+	double y() const;
 
 private:
-	static SampledSpectrum X, Y, Z;
-	static float yint;
-}
+	// Sampled Spectrum x, y, z curves
+	static SampledSpectrum myX, myY, myZ;
+
+	// Stores the integral of the Y matching curve over the wavelength range
+	static double myYIntegral;
+
+	static SampledSpectrum rgbRefl2SpectWhite, rgbRefl2SpectCyan;
+	static SampledSpectrum rgbRefl2SpectMagenta, rgbRefl2SpectYellow;
+	static SampledSpectrum rgbRefl2SpectRed, rgbRefl2SpectGreen;
+	static SampledSpectrum rgbRefl2SpectBlue;
+	static SampledSpectrum rgbIllum2SpectWhite, rgbIllum2SpectCyan;
+	static SampledSpectrum rgbIllum2SpectMagenta, rgbIllum2SpectYellow;
+	static SampledSpectrum rgbIllum2SpectRed, rgbIllum2SpectGreen;
+	static SampledSpectrum rgbIllum2SpectBlue;
+};
 
 
-template <Spectrum>
-inline Spectrum Lerp(float t, const Spectrum &s1, const Spectrum &s2)
-{
-	return (1.0 - t) * s1 + t * s2;
-}
-
-//
-// Spectrum Inline Functions
-template <int nSpectrumSamples>
-inline CoefficientSpectrum<nSpectrumSamples> Pow(const CoefficientSpectrum<nSpectrumSamples> &s, Float e) 
-{
-	CoefficientSpectrum<nSpectrumSamples> ret;
-	for (int i = 0; i < nSpectrumSamples; ++i) 
-		ret.c[i] = pow(s.c[i], e);
-	return ret;
-}*/
 #endif
+*/

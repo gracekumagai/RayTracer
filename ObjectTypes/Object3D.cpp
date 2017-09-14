@@ -78,7 +78,7 @@ void Object3D::loadTexture(const char *filename) {
 
 bool Object3D::useNormalMap()
 {
-	if (normalImage.rgbImageData == NULL) {
+	if (normalImage.myRGBImageData == NULL) {
 		return false;
 	}
 	return true;

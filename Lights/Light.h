@@ -4,10 +4,11 @@
 #include "../GeometricTypes/Point3D.h"
 #include "../ObjectTypes/ColourRGB.h"
 
-class Light {
+class Light 
+{
 protected:
-    ColourRGB colour;
-    Point3D location;
+    ColourRGB myColour;
+    Point3D myLocation;
     
 public:
     Light(const ColourRGB &colour, const Point3D &location);

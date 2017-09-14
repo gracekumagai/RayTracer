@@ -2,8 +2,6 @@
 #include "../GeometricTypes/Point3D.h"
 #include <time.h>
 
-#define Infinity std::numeric_limits<Float>::infinity()
-
 double drand48();
 
 int randInt(int min, int max);
@@ -16,12 +14,35 @@ namespace Utility {
 
 	// Global Inline Functions
 	template <typename T, typename U, typename V>
-	inline T Clamp(T val, U low, V high) {
+	inline T Clamp(T val, U low, V high) 
+	{
 		if (val < low)
 			return low;
 		else if (val > high)
 			return high;
 		else
 			return val;
+	}
+
+	template <typename T>
+	inline T max(T a, T b)
+	{
+		if (a < b)
+			return b;
+		return a;
+	}
+
+	template <typename T>
+	inline T min(T a, T b)
+	{
+		if (a < b)
+			return a;
+		return b;
+	}
+
+	template <typename T>
+	inline T Lerp(double t, T s1, T s2)
+	{
+		return (1.0 - t) * s1 + t * s2;
 	}
 }

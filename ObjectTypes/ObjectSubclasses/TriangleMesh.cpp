@@ -33,7 +33,7 @@ Object3D::Object3D(Material(), ColourRGB()){
 }
 
 ColourRGB TriangleMesh::colourAtTrianglePoint(int mesh, TriangleFace *face, double u, double v) const {
-    if (textureImages[mesh].rgbImageData == NULL) {
+    if (textureImages[mesh].myRGBImageData == NULL) {
     	return colours[mesh];
     }
     // Find texture coordinates at every vertex on the triangle face
@@ -130,8 +130,8 @@ Intersection TriangleMesh::intersect(const Ray3D &ray) {
 	Intersection intersection;
 
     // Acquire ray in local coordinates
-    Point3D rayOrigin = invTransform*ray.origin; //e
-    Point3D rayDirection = invTransform*ray.direction; //d
+    Point3D rayOrigin = invTransform*ray.myOrigin; //e
+    Point3D rayDirection = invTransform*ray.myDirection; //d
     
     // Go through triangle faces and keep track
     // of the one with the closest intersection
@@ -188,8 +188,8 @@ Intersection TriangleMesh::intersect(const Ray3D &ray) {
 
 bool TriangleMesh::doesIntersect(const Ray3D &ray) {
     // Acquire ray in local coordinates
-    Point3D rayOrigin = invTransform*ray.origin; //e
-    Point3D rayDirection = invTransform*ray.direction; //d
+    Point3D rayOrigin = invTransform*ray.myOrigin; //e
+    Point3D rayDirection = invTransform*ray.myDirection; //d
     
     // Go through triangle faces and return true as soon as the
     // ray intersects one of them

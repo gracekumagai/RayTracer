@@ -2,7 +2,7 @@
 #include <list>
 #include "RayTracer.h"
 #include "ObjectTypes/Fractals.h"
-#include "BuildScene.h"
+#include "Scene.h"
 
 using namespace std;
 
@@ -60,50 +60,49 @@ int main(int argc, char *argv[])
     im = new Image(sx, sx);
 
 	//Fractals::renderFractalImage(im, output_name, bounds);
-	
-    buildSceneDOF();		
-    //buildStillLife();
-    
+	    
     e = Point3D(0.0, 0.0, -3.0, false);
     g = Point3D(0.0, 0.0, 0.0, false) - e;
     up = Point3D(0, 1, 0, true);
     View cam(e, g, up, -3, 4);
     
     // Setup the skybox
-    Skybox *skybox = NULL;
+    /*Skybox *skybox = NULL;
     //skybox = new Skybox("Skyboxes/lagoon_lf.ppm", "Skyboxes/lagoon_rt.ppm",
     //                    "Skyboxes/lagoon_dn.ppm", "Skyboxes/lagoon_up.ppm",
     //                    "Skyboxes/lagoon_bk.ppm", "Skyboxes/lagoon_ft.ppm");
-    
+    */
+
+	Scene scene(MAX_DEPTH, antialiasing);
+
+	scene.buildSceneDOF();
+
     fprintf(stderr,"View parameters:\n");
-    fprintf(stderr,"Width=%f, f=%f\n", cam.wsize,cam.f);
+    fprintf(stderr,"Width=%f, f=%f\n", cam.myWindowSize,cam.myFocalLength);
     fprintf(stderr,"Camera to world conversion matrix (make sure it makes sense!):\n");
-    cam.cameraToWorld.printTransform3D();
+    cam.myCameraToWorld.printTransform3D();
     fprintf(stderr,"World to camera conversion matrix\n");
-    cam.worldToCamera.printTransform3D();
+    cam.myWorldToCamera.printTransform3D();
     fprintf(stderr,"\n");
     
     // Render the image with ray tracing
-    rayTracer.mySkyBox = skybox;
+    /*rayTracer.mySkyBox = skybox;
     rayTracer.myMaxDepth = MAX_DEPTH;
     rayTracer.myAntialiasingEnabled = antialiasing;
     rayTracer.mySuperSamplingResolution = 5;
     rayTracer.myGlossyReflEnabled = false;
     rayTracer.myRefractionEnabled = false;
 	rayTracer.myBlurEnabled = false;
-	rayTracer.myDOFEnabled = true;
-    rayTracer.renderImage(cam, objects, lights, im, output_name, bounds);
+	rayTracer.myDOFEnabled = false;*/
+
+    rayTracer.renderImage(cam, scene, im, output_name, bounds);
     
 	//rayTracer.renderNoiseImage(im, output_name, bounds);
 
 	// Clean up
 	delete im;
-    if (skybox != NULL) 
-	{
-        delete skybox;
-    }
 
-	cleanUpScene();
+	scene.cleanUpScene();
 
     return 0;
 }

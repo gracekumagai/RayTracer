@@ -11,10 +11,14 @@ class Ray3D {
     const double biasAmount = 1e-6;
     
 public:
-    Point3D origin;
-    Point3D direction;
+    Point3D myOrigin;
+    Point3D myDirection;
+
+	mutable double myMaxT;
+	double myTime;
     
-    Ray3D(Point3D origin, Point3D direction);
+	Ray3D() :  myMaxT(INFINITY), myTime(0.0) {}
+    Ray3D(Point3D origin, Point3D direction, double maxT = INFINITY, double time = 0.0);
     Ray3D(const Ray3D &ray);
     Ray3D& operator=(const Ray3D &ray);
     
@@ -29,4 +33,17 @@ public:
     Ray3D normalized() const;
 };
 
+
+class RayDifferential : public Ray3D
+{
+public:
+	bool myHasDifferentials;
+	Point3D myXOrigin, myYOrigin, myXDirection, myYDirection;
+
+	RayDifferential() { myHasDifferentials = false; }
+	RayDifferential(Point3D origin, Point3D direction, double maxT = INFINITY, double time = 0.0);
+	RayDifferential(const Ray3D &ray);
+
+	void scaleDifferentials(double scale);
+};
 #endif

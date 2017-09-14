@@ -4,25 +4,26 @@
 #include <stdio.h>
 #include "GeometricTypes/Transform3D.h"
 
-class View {
+class View 
+{
 public:
-    Point3D e;  // location of the camera center
-    Point3D u;  // u vector
-    Point3D v;  // v vector
-    Point3D w;  // w vector
+    Point3D myE;		// location of the camera center
+    Point3D myU;		// u vector
+    Point3D myV;		// v vector
+    Point3D myW;		// w vector
     
-    double f;   // focal length
-    double wsize;   // window size in distance units (not pixels!)
+    double myFocalLength;		// focal length
+    double myWindowSize;   // window size in distance units (not pixels!)
     
-    Transform3D worldToCamera;
-    Transform3D cameraToWorld;
+    Transform3D myWorldToCamera;
+    Transform3D myCameraToWorld;
     
     /*
      This function sets up the camera axes and viewing direction:
      e - Camera center
      g - Gaze direction
      up - Up vector
-     fov - Fild of view in degrees
+     fov - Field of view in degrees
      f - focal length
      */
     View(const Point3D &e, const Point3D &g, const Point3D &up,

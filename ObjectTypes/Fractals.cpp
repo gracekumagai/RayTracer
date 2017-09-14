@@ -38,12 +38,12 @@ void Fractals::renderFractalImage(Image *output, char * name, vector<int> bounds
 	ProgressManager progressManager(frames);
 	progressManager.startTimer();
 
-	vector<ColourRGB> image(output->sx * output->sy);
+	vector<ColourRGB> image(output->myX * output->myY);
 
 	// Set background colour
-	for (int y = 0; y < output->sy; y++) {
-		for (int x = 0; x < output->sx; x++) {
-			image[x + y*output->sx] = ColourRGB(0.0, 0.0, 0.0);
+	for (int y = 0; y < output->myY; y++) {
+		for (int x = 0; x < output->myX; x++) {
+			image[x + y*output->myX] = ColourRGB(0.0, 0.0, 0.0);
 		}
 	}
 
@@ -70,23 +70,23 @@ void Fractals::renderFractalImage(Image *output, char * name, vector<int> bounds
 			if (j < skipIters)
 				continue;
 
-			int xi = static_cast<int>((x - minX) * output->sx / (maxX - minX));
-			int yi = static_cast<int>((y - minY) * output->sy / (maxY - minY));
-			if (xi >= 0 && xi < output->sx &&
-				yi >= 0 && yi < output->sy) {
-				image[xi + yi * output->sx] += curCol;
+			int xi = static_cast<int>((x - minX) * output->myX / (maxX - minX));
+			int yi = static_cast<int>((y - minY) * output->myY / (maxY - minY));
+			if (xi >= 0 && xi < output->myX &&
+				yi >= 0 && yi < output->myY) {
+				image[xi + yi * output->myX] += curCol;
 			}
 		}
 		progressManager.advance();
 	}
 
-	for (int x = 0; x < output->sx; x++)
+	for (int x = 0; x < output->myX; x++)
 	{
-		for (int y = 0; y < output->sy; y++)
+		for (int y = 0; y < output->myY; y++)
 		{
-			ColourRGB colour = image[x + y*output->sx];
-			output->setColourAtPixel(x, y, ColourRGB(1.0 - exp(-sensitivity * colour.red), 
-				1.0 - exp(-sensitivity * colour.green), 1.0 - exp(-sensitivity * colour.blue)));
+			ColourRGB colour = image[x + y*output->myX];
+			output->setColourAtPixel(x, y, ColourRGB(1.0 - exp(-sensitivity * colour.myRed), 
+				1.0 - exp(-sensitivity * colour.myGreen), 1.0 - exp(-sensitivity * colour.myBlue)));
 		}
 	}
 	output->outputImage(name);

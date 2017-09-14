@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include "../GeometricTypes/Point3D.h"
 
-class ColourRGB {
+class ColourRGB 
+{
 public:
-    double red;
-    double green;
-    double blue;
+    double myRed;
+    double myGreen;
+    double myBlue;
     
     ColourRGB(double red, double green, double blue);
     ColourRGB(){}

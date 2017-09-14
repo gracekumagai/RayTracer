@@ -10,7 +10,7 @@ Object3D::Object3D(material, colour) {
 
 ColourRGB Sphere::colourAtLocalPoint(const Point3D &p) const {
     // If no texture, return this object's standard color
-    if (textureImage.rgbImageData == NULL) {
+    if (textureImage.myRGBImageData == NULL) {
         return colour;
     }
     
@@ -29,8 +29,8 @@ Intersection Sphere::intersect(const Ray3D &ray) {
     /////////////////////////////////
     
     // Acquire the ray in local coordinates
-    Point3D rayOrigin = invTransform * ray.origin;
-    Point3D rayDirection = invTransform * ray.direction;
+    Point3D rayOrigin = invTransform * ray.myOrigin;
+    Point3D rayDirection = invTransform * ray.myDirection;
     
     // Compute the components of the quadratic equation
     Point3D centreToRayOrigin = rayOrigin - centre;

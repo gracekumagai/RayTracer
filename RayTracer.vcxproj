@@ -100,6 +100,7 @@
     <ClCompile Include="geometrictypes\Point3D.cpp" />
     <ClCompile Include="geometrictypes\svdDynamic.cpp" />
     <ClCompile Include="geometrictypes\Transform3D.cpp" />
+    <ClCompile Include="Integrator.cpp" />
     <ClCompile Include="lights\AreaLightElement.cpp" />
     <ClCompile Include="lights\Light.cpp" />
     <ClCompile Include="lights\PointLightSource.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="objecttypes\Ray3D.cpp" />
     <ClCompile Include="ObjectTypes\Spectrum.cpp" />
     <ClCompile Include="RayTracer.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Utilities\Math.cpp" />
     <ClCompile Include="utilities\ProgressManager.cpp" />
@@ -130,6 +132,7 @@
     <ClInclude Include="geometrictypes\Point3D.h" />
     <ClInclude Include="geometrictypes\svdDynamic.h" />
     <ClInclude Include="geometrictypes\Transform3D.h" />
+    <ClInclude Include="Integrator.h" />
     <ClInclude Include="lights\AreaLightElement.h" />
     <ClInclude Include="lights\Light.h" />
     <ClInclude Include="lights\PointLightSource.h" />
@@ -149,6 +152,7 @@
     <ClInclude Include="objecttypes\Ray3D.h" />
     <ClInclude Include="ObjectTypes\Spectrum.h" />
     <ClInclude Include="RayTracer.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Utilities\Math.h" />
     <ClInclude Include="utilities\ProgressManager.h" />

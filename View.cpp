@@ -1,24 +1,25 @@
 #include "View.h"
 
 View::View(const Point3D &e, const Point3D &g, const Point3D &up,
-     double f, double wsize) {
+     double f, double wsize) 
+{
     // Setup camera position and basis vectors
-    this->e = e;
-    w = (-1*g).normalized();
-    u = w.crossUnit(up);
-    v = u.crossUnit(w);
+    this->myE = e;
+    myW = (-1*g).normalized();
+    myU = myW.crossUnit(up);
+    myV = myU.crossUnit(myW);
     
     // Copy focal length and window size parameters
-    this->f = f;
-    this->wsize = wsize;
+    this->myFocalLength = f;
+    this->myWindowSize = wsize;
     
     // Setup coordinate conversion matrices
-    cameraToWorld = Transform3D(u.x, v.x, w.x, e.x,
-                                u.y, v.y, w.y, e.y,
-                                u.z, v.z, w.z, e.z,
-                                0.0, 0.0, 0.0, 1.0);
-    worldToCamera = Transform3D(u.x, u.y, u.z, -u.dot(e),
-                                v.x, v.y, v.z, -v.dot(e),
-                                w.x, w.y, w.z, -w.dot(e),
-                                0.0, 0.0, 0.0, 1.0);
+    myCameraToWorld = Transform3D(myU.x, myV.x, myW.x, e.x,
+								  myU.y, myV.y, myW.y, e.y,
+                                  myU.z, myV.z, myW.z, e.z,
+                                  0.0, 0.0, 0.0, 1.0);
+    myWorldToCamera = Transform3D(myU.x, myU.y, myU.z, -myU.dot(e),
+                                  myV.x, myV.y, myV.z, -myV.dot(e),
+                                  myW.x, myW.y, myW.z, -myW.dot(e),
+                                  0.0, 0.0, 0.0, 1.0);
 }

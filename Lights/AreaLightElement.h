@@ -6,11 +6,12 @@
 
 using namespace std;
 
-class AreaLightElement : public Light {
-    Point3D xBasis;
-    Point3D yBasis;
-    double xMaxOffset;
-    double yMaxOffset;
+class AreaLightElement : public Light 
+{
+    Point3D myXBasis;
+    Point3D myYBasis;
+    double myXMaxOffset;
+    double myYMaxOffset;
     
 public:
     AreaLightElement(const ColourRGB &colour, const Point3D &location,

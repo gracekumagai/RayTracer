@@ -1,8 +1,9 @@
 #include "Light.h"
 
 Light::Light(const ColourRGB &colour, const Point3D &location) :
-colour(colour), location(location) {}
+	myColour(colour), myLocation(location) {}
 
-ColourRGB Light::getColour() {
-    return colour;
+ColourRGB Light::getColour() 
+{
+    return myColour;
 }

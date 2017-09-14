@@ -7,7 +7,7 @@ Object3D::Object3D(material, colour) {
 
 ColourRGB Plane::colourAtLocalPoint(const Point3D &p) const {
     // If no texture, return this object's standard color
-    if (textureImage.rgbImageData == NULL) {
+    if (textureImage.myRGBImageData == NULL) {
         return colour;
     }
     
@@ -31,8 +31,8 @@ Intersection Plane::intersect(const Ray3D &ray) {
     Intersection intersection;
     
     // Acquire ray in local coordinates
-    Point3D rayOrigin = invTransform*ray.origin; //e
-    Point3D rayDirection = invTransform*ray.direction; //d
+    Point3D rayOrigin = invTransform*ray.myOrigin; //e
+    Point3D rayDirection = invTransform*ray.myDirection; //d
     
     double denom = normal.dot(rayDirection);
     // Invalid intersection - plane is parallel to ray

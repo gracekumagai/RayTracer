@@ -12,6 +12,8 @@
 #include "ObjectTypes/Ray3D.h"
 #include "View.h"
 #include "Skybox.h"
+#include "Scene.h"
+#include "Integrator.h"
 
 using namespace std;
 
@@ -46,9 +48,8 @@ class RayTracer {
     
 	double totalInternalReflection(const Intersection &intersection, const Ray3D &ray, double refractionIndex);
 
-	ColourRGB applyFog(ColourRGB colour, double distance);
-
 public:
+	// NOTE: THESE CURRENTLY OVERWRITE THE ONES SET IN MAIN
     bool myAntialiasingEnabled = false;
     bool myGlossyReflEnabled = false;
     bool myRefractionEnabled = false;
@@ -66,10 +67,11 @@ public:
 	double myB = 0.5;
 	int myDOFResolution = 500;
     
-    void renderImage(View camera, list<Object3D*> objects, list<Light*> lights,
+    void renderImage(View camera, Scene scene,
                      Image *output, char * name, vector<int> bounds);
 
 	void renderNoiseImage(Image *output, char * name, vector<int> bounds);
+
 };
 
 #endif

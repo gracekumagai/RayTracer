@@ -1,66 +1,74 @@
 #include "ColourRGB.h"
 
 ColourRGB::ColourRGB(const double red = 0, const double green = 0, const double blue = 0) : 
-	red(red), green(green), blue(blue) { }
+	myRed(red), myGreen(green), myBlue(blue) { }
 
-ColourRGB::ColourRGB(const ColourRGB &colour) {
-    red = colour.red;
-    green = colour.green;
-    blue = colour.blue;
+ColourRGB::ColourRGB(const ColourRGB &colour) 
+{
+    myRed = colour.myRed;
+    myGreen = colour.myGreen;
+    myBlue = colour.myBlue;
 }
 
-ColourRGB& ColourRGB::operator=(const ColourRGB &colour) {
-    red = colour.red;
-    green = colour.green;
-    blue = colour.blue;
+ColourRGB& ColourRGB::operator=(const ColourRGB &colour) 
+{
+    myRed = colour.myRed;
+    myGreen = colour.myGreen;
+    myBlue = colour.myBlue;
     
     return *this;
 }
 
-ColourRGB ColourRGB::operator+(const ColourRGB &colour) {
-    return ColourRGB(red + colour.red, green + colour.green, blue + colour.blue);
+ColourRGB ColourRGB::operator+(const ColourRGB &colour) 
+{
+    return ColourRGB(myRed + colour.myRed, myGreen + colour.myGreen, myBlue + colour.myBlue);
 }
 
-ColourRGB& ColourRGB::operator+=(const ColourRGB &colour) {
-    red = red + colour.red;
-    green = green + colour.green;
-    blue = blue + colour.blue;
+ColourRGB& ColourRGB::operator+=(const ColourRGB &colour) 
+{
+    myRed = myRed + colour.myRed;
+    myGreen = myGreen + colour.myGreen;
+    myBlue = myBlue + colour.myBlue;
     
     return *this;
 }
 
-ColourRGB ColourRGB::operator*(double scale) const {
-    return ColourRGB(red*scale, green*scale, blue*scale);
+ColourRGB ColourRGB::operator*(double scale) const 
+{
+    return ColourRGB(myRed*scale, myGreen*scale, myBlue*scale);
 }
 
-ColourRGB ColourRGB::filter(const ColourRGB &filterColour) {
-    return ColourRGB(red * filterColour.red,
-                     green * filterColour.green,
-                     blue * filterColour.blue);
+ColourRGB ColourRGB::filter(const ColourRGB &filterColour) 
+{
+    return ColourRGB(myRed * filterColour.myRed,
+                     myGreen * filterColour.myGreen,
+                     myBlue * filterColour.myBlue);
 }
 
-bool ColourRGB::outOfBounds() {
-    return red > 1.0 || green > 1.0 || blue > 1.0;
+bool ColourRGB::outOfBounds() 
+{
+    return myRed > 1.0 || myGreen > 1.0 || myBlue > 1.0;
 }
 
-void ColourRGB::normalize() {
-    if (red > 1.0) red = 1.0;
-    if (green > 1.0) green = 1.0;
-    if (blue > 1.0) blue = 1.0;
+void ColourRGB::normalize() 
+{
+    if (myRed > 1.0) myRed = 1.0;
+    if (myGreen > 1.0) myGreen = 1.0;
+    if (myBlue > 1.0) myBlue = 1.0;
 }
 
 ColourRGB ColourRGB::lerp(ColourRGB a, ColourRGB b, double t)
 {
-	double red = a.red + t*(b.red - a.red);
-	double green = a.green + t*(b.green - a.green);
-	double blue = a.blue + t*(b.blue - a.blue);
+	double red = a.myRed + t*(b.myRed - a.myRed);
+	double green = a.myGreen + t*(b.myGreen - a.myGreen);
+	double blue = a.myBlue + t*(b.myBlue - a.myBlue);
 
 	return ColourRGB(red, green, blue);
 }
 
 Point3D ColourRGB::convertToPoint3D(bool isVec)
 {
-	return Point3D(red, green, blue, isVec);
+	return Point3D(myRed, myGreen, myBlue, isVec);
 }
 
 ColourRGB ColourRGB::createHue(double h)
