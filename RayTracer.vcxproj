@@ -114,10 +114,12 @@
     <ClCompile Include="objecttypes\Material.cpp" />
     <ClCompile Include="objecttypes\Object3D.cpp" />
     <ClCompile Include="objecttypes\objectsubclasses\BoundingBox.cpp" />
+    <ClCompile Include="ObjectTypes\ObjectSubclasses\Disk.cpp" />
     <ClCompile Include="objecttypes\objectsubclasses\OBJ_Loader.cpp" />
     <ClCompile Include="objecttypes\objectsubclasses\Plane.cpp" />
     <ClCompile Include="objecttypes\objectsubclasses\PlaneLightSource.cpp" />
     <ClCompile Include="objecttypes\objectsubclasses\Sphere.cpp" />
+    <ClCompile Include="ObjectTypes\ObjectSubclasses\Torus.cpp" />
     <ClCompile Include="objecttypes\objectsubclasses\TriangleMesh.cpp" />
     <ClCompile Include="ObjectTypes\PerlinNoise.cpp" />
     <ClCompile Include="objecttypes\Ray3D.cpp" />
@@ -147,10 +149,12 @@
     <ClInclude Include="objecttypes\Material.h" />
     <ClInclude Include="objecttypes\Object3D.h" />
     <ClInclude Include="objecttypes\objectsubclasses\BoundingBox.h" />
+    <ClInclude Include="ObjectTypes\ObjectSubclasses\Disk.h" />
     <ClInclude Include="objecttypes\objectsubclasses\OBJ_Loader.h" />
     <ClInclude Include="objecttypes\objectsubclasses\Plane.h" />
     <ClInclude Include="objecttypes\objectsubclasses\PlaneLightSource.h" />
     <ClInclude Include="objecttypes\objectsubclasses\Sphere.h" />
+    <ClInclude Include="ObjectTypes\ObjectSubclasses\Torus.h" />
     <ClInclude Include="objecttypes\objectsubclasses\TriangleMesh.h" />
     <ClInclude Include="ObjectTypes\PerlinNoise.h" />
     <ClInclude Include="objecttypes\Ray3D.h" />

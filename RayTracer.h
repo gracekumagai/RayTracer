@@ -54,8 +54,8 @@ public:
     bool myGlossyReflEnabled = false;
     bool myRefractionEnabled = false;
 	bool myBlurEnabled = false;
-    int myMaxDepth = 3;
-    int mySuperSamplingResolution = 5;
+	int myMaxDepth = 3;//3;
+    int mySuperSamplingResolution = 8;
     int myGlossyResolution = 8;
 	int myBlurResolution = 8;
     Skybox *mySkyBox = NULL;

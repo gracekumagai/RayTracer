@@ -2,6 +2,8 @@
 #include "ObjectTypes/ObjectSubclasses/Plane.h"
 #include "ObjectTypes/ObjectSubclasses/Sphere.h"
 #include "ObjectTypes/ObjectSubclasses/TriangleMesh.h"
+#include "ObjectTypes/ObjectSubclasses/Disk.h"
+#include "ObjectTypes/ObjectSubclasses/Torus.h"
 #include "Lights/PointLightSource.h"
 #include "Lights/AreaLightElement.h"
 
@@ -213,7 +215,7 @@ void Scene::buildSceneAnimate2(void)
 {
 	//Sphere
 	Object3D *obj = new Sphere(Material(0.1, 0.95, 0.1, 0.0, 1, 1, 6, 0.3),
-		ColourRGB(0.7, 0.3, 0.8));
+		ColourRGB(1.0, 1.0, 1.0));
 
 	Transform3D t1 = Transform3D::translated(0.0, 0.0, 5.0) * Transform3D::scaled(3.0, 3.0, 3.0);
 	//Transform3D t2 = Transform3D::translated(0.0, -2.0, 0.0) * t1;
@@ -227,6 +229,25 @@ void Scene::buildSceneAnimate2(void)
 	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
 		Point3D(0.0, 5.5, -5.5, false));
 	myLights.push_front(light);
+}
+
+void Scene::buildSceneTestDisk()
+{
+	// Disk
+	Object3D *obj = new Torus(Material(0.75, 0.8, 0.4, 0.35, 1, 1, 6, 0.3),
+		ColourRGB(0.5, 0.25, 0.5));
+	obj->rotateX(-PI/4.0);
+	obj->translate(0.0, 1.0, 5.0);
+	myObjects.push_front(obj);
+
+	//Point Light Source
+	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
+		Point3D(0.0, 15.5, -5.5, false));
+	myLights.push_front(light);
+
+	myProp.mySkybox = new Skybox("Skyboxes/lagoon_lf.ppm", "Skyboxes/lagoon_rt.ppm",
+		"Skyboxes/lagoon_dn.ppm", "Skyboxes/lagoon_up.ppm",
+		"Skyboxes/lagoon_bk.ppm", "Skyboxes/lagoon_ft.ppm");
 }
 
 void Scene::cleanUpScene(void)

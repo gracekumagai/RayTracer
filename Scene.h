@@ -53,6 +53,8 @@ public:
 	void buildSceneAnimate();
 	void buildSceneAnimate2(); 
 
+	void buildSceneTestDisk();
+
 	void update(double t);
 
 	void cleanUpScene();

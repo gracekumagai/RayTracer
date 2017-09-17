@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
 	Scene scene(MAX_DEPTH, antialiasing);
 
-	scene.buildSceneAnimate2();
+	scene.buildSceneTestDisk();
 
     fprintf(stderr,"View parameters:\n");
     fprintf(stderr,"Width=%f, f=%f\n", cam.myWindowSize,cam.myFocalLength);

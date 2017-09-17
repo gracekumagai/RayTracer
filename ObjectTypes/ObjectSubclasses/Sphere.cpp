@@ -1,11 +1,27 @@
 #include "Sphere.h"
+#include "../../Utilities/Math.h"
 #include <math.h>
 
 #define PI 3.14159265354
 
 Sphere::Sphere(const Material &material, const ColourRGB &colour) :
-Object3D::Object3D(material, colour) {
+Object3D::Object3D(material, colour) 
+{
     Object3D::isLight = false;
+	thetaMin = 0.0;
+	thetaMin = PI;
+	phiMax = 2.0 * PI;
+}
+
+Sphere::Sphere(double r, double z0, double z1, double pMax, const Material &material, const ColourRGB &colour) :
+	Object3D::Object3D(material, colour)
+{
+	Object3D::isLight = false;
+	zMin = Utility::Clamp(Utility::min(z0, z1), -r, r);
+	zMax = Utility::Clamp(Utility::max(z0, z1), -r, r);
+	thetaMin = acos(Utility::Clamp(zMin / r, -1.0, 1.0));
+	thetaMax = acos(Utility::Clamp(zMax / r, -1.0, 1.0));
+	phiMax = radians(Utility::Clamp(pMax, 0.0, 360.0));
 }
 
 ColourRGB Sphere::colourAtLocalPoint(const Point3D &p) const {
@@ -107,6 +123,12 @@ Intersection Sphere::intersect(const Ray3D &ray) {
     return intersection;
 }
 
-bool Sphere::doesIntersect(const Ray3D &ray) {
+bool Sphere::doesIntersect(const Ray3D &ray) 
+{
     return !intersect(ray).none;
+}
+
+double Sphere::area() const
+{
+	return phiMax * radius * (zMax - zMin);
 }

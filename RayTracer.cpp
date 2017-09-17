@@ -147,7 +147,7 @@ ColourRGB RayTracer::shade(Intersection &intersection, const Ray3D &ray, int dep
 	if (depth > 0) 
 	{
 		refl += reflection(intersection, ray, depth - 1);
-	
+
 		if (myRefractionEnabled) 
 		{	
 			refract += refraction(intersection, ray, depth - 1, intersection.material.refractionIndex);
@@ -264,7 +264,7 @@ bool RayTracer::isInShadow(const Intersection &intersection, const Point3D &ligh
 ColourRGB RayTracer::reflection(const Intersection &intersection, const Ray3D &ray, int depth) {
     ColourRGB reflectedColour(0, 0, 0);
     
-    Object3D *excludedSource = intersection.canSelfReflect ? intersection.obj : NULL;
+	Object3D *excludedSource = intersection.canSelfReflect ? intersection.obj : NULL;
     
     // Reflection direction
     Point3D r = ray.myDirection - 2 * intersection.normal*(ray.myDirection.dot(intersection.normal));
@@ -294,7 +294,7 @@ ColourRGB RayTracer::reflection(const Intersection &intersection, const Ray3D &r
 	{
         Ray3D reflectionRay(intersection.point, r);
         reflectionRay = reflectionRay.bias(intersection.normal);
-        reflectedColour = rayTraceRecursive(reflectionRay, depth);
+        reflectedColour = rayTraceRecursive(reflectionRay, depth, excludedSource);
     }
     
     return reflectedColour * intersection.material.global;

@@ -126,6 +126,12 @@
     <ClCompile Include="Utilities\ProbabiltiyDist.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectTypes\ObjectSubclasses\Disk.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTypes\ObjectSubclasses\Torus.cpp">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RayTracer.h">
@@ -220,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="Utilities\ProbabilityDist.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTypes\ObjectSubclasses\Disk.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTypes\ObjectSubclasses\Torus.h">
+      <Filter>ObjectTypes\ObjectSubclasses</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

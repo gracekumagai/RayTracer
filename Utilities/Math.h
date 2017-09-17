@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "../GeometricTypes/Point3D.h"
 #include <time.h>
+#include <complex>
+
 
 double drand48();
 
@@ -9,6 +11,20 @@ int randInt(int min, int max);
 double randDouble(double min, double max);
 
 Point3D polarToCartesian2D(double theta, double r);
+
+double radians(double degrees);
+
+static std::complex<double> complexSqrt(const std::complex<double> &z);
+static std::complex<double> complexCubeRt(const std::complex<double> &z);
+
+int findRealRoots(std::complex<double> r[4], double realRoots[4]);
+
+int solveQuatric(const double c[5], double r[4]);
+
+int findNumPositiveRoots(double r[4], int n);
+
+int solveQuartic(double coeff[5], double roots[4]);
+
 
 namespace Utility {
 

@@ -8,6 +8,21 @@
 #include "../GeometricTypes/Transform3D.h"
 #include "../GeometricTypes/AnimatedTransform.h"
 
+struct Geometry
+{
+public:
+	Point3D myPoint, myNormal;
+	double myU, myV;
+
+	const Object3D *myObject;
+	Point3D myDpdu, myDpdv, myDndu, myDndv;
+
+	Geometry();
+	Geometry(const Point3D &p, const Point3D &dpdu, const Point3D &dpdv,
+			 const Point3D &dndu, const Point3D &dndv, double u, double v,
+			 const Object3D *object);
+};
+
 class Object3D {
 protected:
     bool isLight;       // Flag to indicate if this object is a light

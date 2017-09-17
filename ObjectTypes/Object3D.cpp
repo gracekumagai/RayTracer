@@ -1,5 +1,23 @@
 #include "Object3D.h"
 
+/* GEOMETRY */
+Geometry::Geometry()
+{
+	myU = myV = 0.0;
+	myObject = NULL;
+}
+
+Geometry::Geometry(const Point3D &p, const Point3D &dpdu, const Point3D &dpdv,
+	const Point3D &dndu, const Point3D &dndv, double u, double v,
+	const Object3D *object) : myPoint(p), myDpdu(dpdu), myDpdv(dpdv), myDndu(dndu), myDndv(dndv)
+{
+	myNormal = dpdu.crossUnit(dpdv).normalized();
+	myU = u;
+	myV = v;
+	myObject = object;
+}
+
+/* OBJECT 3D */
 bool Object3D::isLightSource() {
     return isLight;
 }
