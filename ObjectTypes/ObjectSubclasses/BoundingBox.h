@@ -20,7 +20,8 @@ public:
                                   double *u, double *v);
 };
 
-class BoundingBox {
+class BBoxMesh 
+{
     static const int maxDepth = 10;
     
     void findBoundsForFaces(const vector<TriangleFace> containedFaces);
@@ -29,15 +30,14 @@ class BoundingBox {
 public:
     vector<TriangleFace> faces;
     double maxX, minX, maxY, minY, maxZ, minZ;
-    vector<BoundingBox> children;
+    vector<BBoxMesh> children;
     
-    static BoundingBox BuildVolumeHierarchy(const objl::Mesh &mesh);
-    BoundingBox(vector<TriangleFace> faces, int splitAxis, const objl::Mesh &mesh, int depth);
+    static BBoxMesh BuildVolumeHierarchy(const objl::Mesh &mesh);
+    BBoxMesh(vector<TriangleFace> faces, int splitAxis, const objl::Mesh &mesh, int depth);
     
     TriangleFace* intersect(Point3D &origin, Point3D &direction, double *lambda, double *u, double *v);
     
     bool doesIntersect(Point3D &origin, Point3D &direction);
-    
 };
 
 #endif /* BoundingBox_h */

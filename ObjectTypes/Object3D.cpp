@@ -11,6 +11,7 @@ material(material), colour(colour) {
     this->transform = Transform3D::identity();
     this->invTransform = Transform3D::identity();
     this->isLight = false;              // default
+	this->animTransform = NULL;
 }
 
 Object3D::Object3D(const Object3D &obj) :

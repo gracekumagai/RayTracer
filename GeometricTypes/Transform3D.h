@@ -23,7 +23,9 @@ public:
     Transform3D(const Transform3D &t);
     
     Transform3D& operator=(const Transform3D &t);
-    
+	bool operator==(const Transform3D &t) const;
+	bool operator!=(const Transform3D &t) const;
+
     // NOTE: only to be used on affine matrices
     Transform3D inverse();
     Transform3D transpose() const;
@@ -35,8 +37,12 @@ public:
     Point3D translationComponent() const;
     
     void printTransform3D();
+
+	double get(int row, int col) const;
+	void set(int row, int col, double val);
 };
 
 Transform3D operator*(double scale, const Transform3D &t);  // scalar * matrix
+Transform3D translate(const Vector &v);
 
 #endif

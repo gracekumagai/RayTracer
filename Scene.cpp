@@ -186,13 +186,61 @@ void Scene::buildSceneDOF(void)
 	                    "Skyboxes/lagoon_bk.ppm", "Skyboxes/lagoon_ft.ppm");
 }
 
+void Scene::buildSceneAnimate(void)
+{
+	//Sphere
+	Object3D *obj = new Sphere(Material(0.1, 0.95, 0.1, 0.0, 1, 1, 6, 0.3),
+		ColourRGB(1.00, 0.00, 1.0));
+
+	Transform3D t1 = Transform3D::translated(0.0, 0.0, 5.0) * Transform3D::scaled(3.0, 3.0, 3.0);
+	Transform3D t2 = Transform3D::rotatedZ(PI) * t1;
+
+	obj->transform = t1;
+	obj->updateInverse();
+
+	obj->animTransform = new AnimatedTransform(t1, 0, t2, 1.0);
+
+	obj->loadTexture("RenderedImages/Wood.ppm");
+	myObjects.push_front(obj);
+
+	//Point Light Source
+	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
+		Point3D(0.0, 5.5, -5.5, false));
+	myLights.push_front(light);
+}
+
+void Scene::buildSceneAnimate2(void)
+{
+	//Sphere
+	Object3D *obj = new Sphere(Material(0.1, 0.95, 0.1, 0.0, 1, 1, 6, 0.3),
+		ColourRGB(0.7, 0.3, 0.8));
+
+	Transform3D t1 = Transform3D::translated(0.0, 0.0, 5.0) * Transform3D::scaled(3.0, 3.0, 3.0);
+	//Transform3D t2 = Transform3D::translated(0.0, -2.0, 0.0) * t1;
+	obj->transform = t1;
+	obj->updateInverse();
+
+	//obj->animTransform = new AnimatedTransform(t1, 0, t2, 1.0);
+	myObjects.push_front(obj);
+
+	//Point Light Source
+	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
+		Point3D(0.0, 5.5, -5.5, false));
+	myLights.push_front(light);
+}
+
 void Scene::cleanUpScene(void)
 {
-	while (!myObjects.empty()) {
+	while (!myObjects.empty()) 
+	{
+		if (myObjects.front()->animTransform != NULL)
+			delete myObjects.front()->animTransform;
+
 		delete myObjects.front();
 		myObjects.pop_front();
 	}
-	while (!myLights.empty()) {
+	while (!myLights.empty()) 
+	{
 		delete myLights.front();
 		myLights.pop_front();
 	}
@@ -200,5 +248,20 @@ void Scene::cleanUpScene(void)
 	if (myProp.mySkybox != NULL)
 	{
 		delete myProp.mySkybox;
+	}
+}
+
+void Scene::update(double t)
+{
+	for (auto object : myObjects)
+	{
+		if (object->animTransform != NULL)
+		{
+			Transform3D T = object->transform;
+			object->animTransform->interpolate(t, &T);
+
+			object->transform = T;
+			object->updateInverse();
+		}
 	}
 }

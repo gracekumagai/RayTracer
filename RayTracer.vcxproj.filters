@@ -117,6 +117,15 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeometricTypes\Quaternion.cpp">
+      <Filter>GeometricTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometricTypes\AnimatedTransform.cpp">
+      <Filter>GeometricTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\ProbabiltiyDist.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RayTracer.h">
@@ -194,9 +203,6 @@
     <ClInclude Include="ObjectTypes\Spectrum.h">
       <Filter>ObjectTypes</Filter>
     </ClInclude>
-    <ClInclude Include="BuildScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities\Math.h">
       <Filter>Utilities</Filter>
     </ClInclude>
@@ -205,6 +211,15 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometricTypes\Quaternion.h">
+      <Filter>GeometricTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometricTypes\AnimatedTransform.h">
+      <Filter>GeometricTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\ProbabilityDist.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

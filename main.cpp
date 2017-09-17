@@ -3,6 +3,7 @@
 #include "RayTracer.h"
 #include "ObjectTypes/Fractals.h"
 #include "Scene.h"
+#include "Utilities/ProbabilityDist.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
         fprintf(stderr,"   parallization_params = 4 params for the bounds of pixels we are generating\n");
         exit(0);
     }
-
+	
     sx=atoi(argv[1]);
     MAX_DEPTH=atoi(argv[2]);
     if (atoi(argv[3])==0) antialiasing=0; else antialiasing=1;
@@ -65,17 +66,10 @@ int main(int argc, char *argv[])
     g = Point3D(0.0, 0.0, 0.0, false) - e;
     up = Point3D(0, 1, 0, true);
     View cam(e, g, up, -3, 4);
-    
-    // Setup the skybox
-    /*Skybox *skybox = NULL;
-    //skybox = new Skybox("Skyboxes/lagoon_lf.ppm", "Skyboxes/lagoon_rt.ppm",
-    //                    "Skyboxes/lagoon_dn.ppm", "Skyboxes/lagoon_up.ppm",
-    //                    "Skyboxes/lagoon_bk.ppm", "Skyboxes/lagoon_ft.ppm");
-    */
 
 	Scene scene(MAX_DEPTH, antialiasing);
 
-	scene.buildSceneDOF();
+	scene.buildSceneAnimate2();
 
     fprintf(stderr,"View parameters:\n");
     fprintf(stderr,"Width=%f, f=%f\n", cam.myWindowSize,cam.myFocalLength);
@@ -95,13 +89,38 @@ int main(int argc, char *argv[])
 	rayTracer.myBlurEnabled = false;
 	rayTracer.myDOFEnabled = false;*/
 
-    rayTracer.renderImage(cam, scene, im, output_name, bounds);
-    
-	//rayTracer.renderNoiseImage(im, output_name, bounds);
+	if (scene.myProp.myAnimResolution > 1)
+	{
+		// Render Images at KeyFrames
+		CustumWeibull weibullDist(1.0, 5.0, rayTracer.myAnimResolution);
 
+		for (int n = 0; n < rayTracer.myAnimResolution; n++)
+		{
+			// Update Transformations
+			scene.update(double(n) / double(rayTracer.myAnimResolution - 1.0));
+			//scene.update(weibullDist.getWeight(n));
+
+			// Rename
+			char num[10];
+			sprintf(num, "%d", n);
+
+			char * newName = strdup(output_name);
+			newName = strcat(newName, num);
+			newName = strcat(newName, ".ppm");
+
+			rayTracer.renderImage(cam, scene, im, newName, bounds);
+		}
+
+		rayTracer.renderAnimImage(im, output_name, bounds);
+	}
+
+	rayTracer.renderImage(cam, scene, im, output_name, bounds);
+
+	//rayTracer.renderNoiseImage(im, output_name, bounds);
+	
 	// Clean up
 	delete im;
-
+	
 	scene.cleanUpScene();
 
     return 0;

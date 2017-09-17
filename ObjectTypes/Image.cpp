@@ -194,6 +194,27 @@ void Image::setColourAtPixel(int index, ColourRGB colour)
 	*((unsigned char *)myRGBImageData + 3 * index + 2) = B;
 }
 
+void Image::addColourAtPixel(int x, int y, ColourRGB colour)
+{
+	if (x >= myX || y >= myY) {
+		printf("Error: pixel is out of bounds of the image\n");
+	}
+
+	if (colour.myRed < 0.0 || colour.myRed > 1.0 ||
+		colour.myGreen < 0.0 || colour.myGreen > 1.0 ||
+		colour.myBlue < 0.0 || colour.myBlue > 1.0) {
+		printf("Error: setting pixel to an invalid colour\n");
+	}
+
+	unsigned char R = (unsigned char)(int)(255 * colour.myRed);
+	unsigned char G = (unsigned char)(int)(255 * colour.myGreen);
+	unsigned char B = (unsigned char)(int)(255 * colour.myBlue);
+
+	*((unsigned char *)myRGBImageData + 3 * (y*myX + x) + 0) += R;
+	*((unsigned char *)myRGBImageData + 3 * (y*myX + x) + 1) += G;
+	*((unsigned char *)myRGBImageData + 3 * (y*myX + x) + 2) += B;
+}
+
 ColourRGB Image::getColourAtPixel(int x, int y) const 
 {
     if (x >= myX || y >= myY) 
@@ -245,4 +266,15 @@ void Image::outputImage(const char *filename)
         return;
     }
     fprintf(stderr,"imageOutput(): Specified image is empty. Nothing output\n");
+}
+
+void Image::createBlackImage()
+{
+	for (int i = 0; i < myX; i++)
+	{
+		for (int j = 0; j < myY; j++)
+		{
+			setColourAtPixel(i, j, ColourRGB(0, 0, 0));
+		}
+	}
 }

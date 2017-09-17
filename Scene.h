@@ -28,6 +28,9 @@ struct sceneProperties
 	double myApeture = 0.0078;
 	double myB = 0.5;
 	int myDOFResolution = 500;
+
+	//Motion Blur
+	int myAnimResolution = 1;
 };
 
 class Scene
@@ -47,6 +50,10 @@ public:
 	void buildSceneDOF();
 	void buildSceneGlass();
 	void buildSceneStillLife();
+	void buildSceneAnimate();
+	void buildSceneAnimate2(); 
+
+	void update(double t);
 
 	void cleanUpScene();
 };

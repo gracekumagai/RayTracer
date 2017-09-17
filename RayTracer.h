@@ -66,12 +66,16 @@ public:
 	double myApeture = 0.0078;
 	double myB = 0.5;
 	int myDOFResolution = 500;
+
+	//Animation
+	int myAnimResolution = 1;	// 1 for standard ray tracer, n > 1 for animation/motion blur;
     
     void renderImage(View camera, Scene scene,
                      Image *output, char * name, vector<int> bounds);
 
 	void renderNoiseImage(Image *output, char * name, vector<int> bounds);
 
+	void renderAnimImage(Image *output, char * name, vector<int> bounds);
 };
 
 #endif

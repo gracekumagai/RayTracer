@@ -7,6 +7,101 @@
 
 #define M_PI 3.15
 
+Vector::Vector() {
+	x = 0.0;
+	y = 0.0;
+	z = 0.0;
+}
+
+Vector::Vector(double x, double y, double z) 
+{
+	this->x = x;
+	this->y = y;
+	this->z = z;
+}
+
+Vector::Vector(objl::Vector3 &v) 
+{
+	this->x = v.X;
+	this->y = v.Y;
+	this->z = v.Z;
+}
+
+Vector::Vector(Vector &p1, Vector &p2, Vector &p3)
+{
+	//Average constructor
+	this->x = (p1.x + p2.x + p3.x) / 3;
+	this->y = (p1.y + p2.y + p3.y) / 3;
+	this->z = (p1.z + p2.z + p3.z) / 3;
+}
+
+double Vector::magnitude() const {
+	return sqrt(this->x*this->x + this->y*this->y + this->z*this->z);
+}
+
+Vector Vector::normalized() const 
+{
+	return (*this) * (1.0 / (this->magnitude()));
+}
+
+double Vector::dot(const Vector &other) const {
+	return this->x*other.x + this->y*other.y + this->z*other.z;
+}
+
+Vector Vector::crossUnit(const Vector &other) const {
+	return Vector(this->y*other.z - this->z*other.y,
+		other.x*this->z - other.z*this->x,
+		this->x*other.y - this->y*other.x).normalized();
+}
+
+Vector Vector::operator+(const Vector &other) const {
+	return Vector(this->x + other.x, this->y + other.y, this->z + other.z);
+}
+
+Vector& Vector::operator+=(const Vector &other) 
+{
+	x += other.x;
+	y += other.y;
+	z += other.z;
+
+	return *this;
+}
+
+Vector& Vector::operator-=(const Vector &other)
+{
+	x -= other.x;
+	y -= other.y;
+	z -= other.z;
+
+	return *this;
+}
+
+Vector Vector::operator-(const Vector &other) const {
+	return Vector(this->x - other.x, this->y - other.y, this->z - other.z);
+}
+
+Vector Vector::operator+(double offset) const {
+	return Vector(this->x + offset, this->y + offset, this->z + offset);
+}
+
+Vector Vector::operator*(double scale) const {
+	return Vector(this->x * scale, this->y * scale, this->z * scale);
+}
+
+bool Vector::operator==(const Vector &other) const {
+	return this->x == other.x && this->y == other.y && this->z == other.z;
+}
+
+bool Vector::operator!=(const Vector &other) const {
+	return !(*(this) == other);
+}
+
+Vector Vector::linearInterpolate(const Vector &end, double progress) const {
+	Vector difference = end - (*this);
+	return (*this) + difference*progress;
+}
+
+/* POINT3D */
 Point3D::Point3D() {
     x = 0.0;
     y = 0.0;
@@ -144,4 +239,9 @@ Point3D Point3D::homogeonized() const {
 }
 double Point3D::average() {
 	return ((this->x + this->y + this->z)/3);
+}
+
+inline double dotVector(const Vector &v1, const Vector &v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

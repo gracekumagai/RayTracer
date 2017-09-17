@@ -6,17 +6,18 @@
 #include "Image.h"
 #include "Ray3D.h"
 #include "../GeometricTypes/Transform3D.h"
+#include "../GeometricTypes/AnimatedTransform.h"
 
 class Object3D {
 protected:
     bool isLight;       // Flag to indicate if this object is a light
-    void updateInverse();
     
 public:
     Material material;
     ColourRGB colour;
     Transform3D transform;      // Model -> World
     Transform3D invTransform;   // World -> Model
+	AnimatedTransform *animTransform;
     
     Image textureImage;         // Structure holding the texture for this object
 	Image normalImage;			// Structure holding the normals for this object
@@ -48,7 +49,8 @@ public:
     void rotateZ(double theta);
     void translate(double x, double y, double z);
     void scale(double x, double y, double z);
-    
+	void updateInverse();
+
     Point3D originInWorld() const;
     
 	bool useNormalMap();

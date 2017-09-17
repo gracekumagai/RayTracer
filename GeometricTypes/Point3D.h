@@ -2,12 +2,42 @@
 #define Point3D_h
 
 #include "../ObjectTypes/ObjectSubclasses/OBJ_Loader.h"
-
+#include <stdio.h>
 
 // forward declare the object type to avoid circular dependencies
 class Object3D;
 
-class Point3D {
+class Vector
+{
+public:
+	double x, y, z;
+
+	Vector();
+	Vector(double x, double y, double z);
+	Vector(objl::Vector3 &v);
+	Vector(Vector &p1, Vector &p2, Vector &p3);
+
+	double magnitude() const;
+	Vector normalized() const;
+
+	double dot(const Vector &other) const;
+	Vector crossUnit(const Vector &other) const;    // normalized cross product
+
+	Vector operator+(const Vector &other) const;
+	Vector& operator+=(const Vector &other);
+	Vector operator-(const Vector &other) const;
+	Vector& operator-=(const Vector &other);
+	Vector operator+(double offset) const;
+	Vector operator*(double scale) const;          // vec * scalar
+
+	bool operator==(const Vector &other) const;
+	bool operator!=(const Vector &other) const;
+
+	Vector linearInterpolate(const Vector &end, double progress) const; // progress: [0,1]
+};
+
+class Point3D 
+{
     double w;
     
 public:
@@ -55,5 +85,6 @@ public:
 };
 
 Point3D operator*(double scale, const Point3D &p); // scalar * vec
+inline double dotVector(const Vector &v1, const Vector &v2);
 
 #endif

@@ -107,7 +107,7 @@ bool TriangleMesh::loadOBJ(const string path)
         
         // Construct a bounding box for every mesh
         for (int i = 0; i < meshes.size(); i++) {
-            boundingBoxes.push_back(BoundingBox::BuildVolumeHierarchy(meshes[i]));
+            boundingBoxes.push_back(BBoxMesh::BuildVolumeHierarchy(meshes[i]));
         }
 	}
 	// If not output an error

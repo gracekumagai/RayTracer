@@ -88,6 +88,24 @@ Transform3D& Transform3D::operator=(const Transform3D &t) {
     return (*this);
 }
 
+bool Transform3D::operator==(const Transform3D &t) const
+{
+	for (int r = 0; r < 4; r++) {
+		for (int c = 0; c < 4; c++) {
+			if (m[r][c] != t.m[r][c])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Transform3D::operator!=(const Transform3D &t) const
+{
+	return !(*(this) == t);
+}
+
 Transform3D Transform3D::inverse() {
     Transform3D inv;
     
@@ -228,4 +246,22 @@ void Transform3D::printTransform3D() {
     printf("\t(%.2f, %.2f, %.2f, %.2f)\n", m[2][0], m[2][1], m[2][2], m[2][3]);
     printf("\t(%.2f, %.2f, %.2f, %.2f)\n", m[3][0], m[3][1], m[3][2], m[3][3]);
     printf("}\n");
+}
+
+double Transform3D::get(int row, int col) const
+{
+	return m[row][col];
+}
+
+void Transform3D::set(int row, int col, double val)
+{
+	m[row][col] = val;
+}
+
+Transform3D translate(const Vector &v)
+{
+	return Transform3D(1, 0, 0, v.x,
+					   0, 1, 0, v.y,
+					   0, 0, 1, v.z,
+					   0, 0, 0, 1);
 }

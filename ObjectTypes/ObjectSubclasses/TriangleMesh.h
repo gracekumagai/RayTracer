@@ -19,7 +19,7 @@ class TriangleMesh : public Object3D{
 	 */
     
     bool isLoaded = false;
-    vector<BoundingBox> boundingBoxes;
+    vector<BBoxMesh> boundingBoxes;
     vector<objl::Mesh> meshes;
     vector<ColourRGB> colours;
     vector<Material> materials;

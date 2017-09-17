@@ -4,6 +4,7 @@
 #include "RayTracer.h"
 #include "Utilities/ProgressManager.h"
 #include "Utilities/Math.h"
+#include "Utilities/ProbabilityDist.h"
 #include "ObjectTypes/PerlinNoise.h"
 
 void RayTracer::renderImage(View camera, Scene scene,
@@ -17,54 +18,54 @@ void RayTracer::renderImage(View camera, Scene scene,
     int rows = bounds[1] - bounds[0];
     int cols = bounds[3] - bounds[2];
 
-    // Object to keep track of the progress and give us some feedback
-    ProgressManager progressManager(rows * cols);
-    progressManager.startTimer();
+	// Object to keep track of the progress and give us some feedback
+	ProgressManager progressManager(rows * cols);
+	progressManager.startTimer();
 
-    // Itterate through all the pixels and do the ray tracing
+	// Itterate through all the pixels and do the ray tracing
 #pragma omp parallel for schedule(dynamic)		// Multithread rendering
-    for (int i = 0; i < output->myX; i++)
-    {
-        for (int j = 0; j < output->myY; j++)
-        {
-            if (i < bounds[0] || i >= bounds[1] || j < bounds[2] || j >= bounds[3]) 
+	for (int i = 0; i < output->myX; i++)
+	{
+		for (int j = 0; j < output->myY; j++)
+		{
+			if (i < bounds[0] || i >= bounds[1] || j < bounds[2] || j >= bounds[3])
 			{
-                output->setColourAtPixel(i, j, ColourRGB(0, 0, 0));
-                continue;
-            }
-            
-            // Find the current ray
-            Point3D origin(0, 0, 0, false);
-            double xIncrement = ((i+0.5)/output->myX) * camera.myWindowSize;
-            double yIncrement = ((j+0.5)/output->myY) * camera.myWindowSize;
-            Point3D targetPixel(camera.myWindowSize/2 - xIncrement,
-                                camera.myWindowSize/2 - yIncrement,
-                                camera.myFocalLength, false);
-            Point3D direction = targetPixel - origin;
-            Ray3D ray(camera.myCameraToWorld * origin,
-                      camera.myCameraToWorld * direction);
-            
-            // Trace the pixel and store it in the image
-            ColourRGB pixelColour = rayTrace(ray, camera.myWindowSize / output->myX, targetPixel);
-            if (pixelColour.outOfBounds()) 
-			{
-                pixelColour.normalize();
-            }
-            output->setColourAtPixel(i, j, pixelColour);
+				output->setColourAtPixel(i, j, ColourRGB(0, 0, 0));
+				continue;
+			}
 
-            progressManager.advance();
-        }
-    }
-    
-    // Output rendered image
-    output->outputImage(name);
+			// Find the current ray
+			Point3D origin(0, 0, 0, false);
+			double xIncrement = ((i + 0.5) / output->myX) * camera.myWindowSize;
+			double yIncrement = ((j + 0.5) / output->myY) * camera.myWindowSize;
+			Point3D targetPixel(camera.myWindowSize / 2 - xIncrement,
+				camera.myWindowSize / 2 - yIncrement,
+				camera.myFocalLength, false);
+			Point3D direction = targetPixel - origin;
+			Ray3D ray(camera.myCameraToWorld * origin,
+				camera.myCameraToWorld * direction);
+
+			// Trace the pixel and store it in the image
+			ColourRGB pixelColour = rayTrace(ray, camera.myWindowSize / output->myX, targetPixel);
+
+			if (pixelColour.outOfBounds())
+			{
+				pixelColour.normalize();
+			}
+			output->setColourAtPixel(i, j, pixelColour);
+
+			progressManager.advance();
+		}
+	}
+	// Output rendered image
+	output->outputImage(name);
 }
 
 ColourRGB RayTracer::rayTrace(Ray3D ray, double pixelSize, Point3D targetPixel) 
 {
     ColourRGB pixelColour(0, 0, 0);
-    
-    if (myAntialiasingEnabled) 
+
+	if (myAntialiasingEnabled) 
 	{
         double subPixelSize = pixelSize / mySuperSamplingResolution;
         for (int i = 0; i < mySuperSamplingResolution; i++) 
@@ -400,6 +401,63 @@ void RayTracer::renderNoiseImage(Image *output, char * name, vector<int> bounds)
 			progressManager.advance();
 		}
 	}
+	// Output rendered image
+	output->outputImage(name);
+}
+
+void RayTracer::renderAnimImage(Image *output, char * name, vector<int> bounds)
+{
+	int rows = bounds[1] - bounds[0];
+	int cols = bounds[3] - bounds[2];
+
+	output->createBlackImage();
+	//CustumWeibull weibullDist(1.0, 7.0, myAnimResolution);
+
+	// Itterate through all the pixels
+#pragma omp parallel for schedule(dynamic)		// Multithread rendering
+	for (int n = 0; n < myAnimResolution; n++)
+	{
+		// Open an image
+		char num[10];
+		sprintf(num, "%d", n);
+
+		char * newName = strdup(name);
+		newName = strcat(newName, num);
+		newName = strcat(newName, ".ppm");
+			
+		Image tmp;
+		Image::readPPMimage(newName, &tmp);
+
+		// Object to keep track of the progress and give us some feedback
+		ProgressManager progressManager(rows * cols);
+		progressManager.startTimer();
+
+		for (int i = 0; i < output->myX; i++)
+		{
+			for (int j = 0; j < output->myY; j++)
+			{
+				if (i < bounds[0] || i >= bounds[1] || j < bounds[2] || j >= bounds[3])
+				{
+					continue;
+				}
+
+				ColourRGB pixelColour = tmp.getColourAtPixel(i, j);
+
+				if (pixelColour.outOfBounds())
+				{
+					pixelColour.normalize();
+				}
+				
+				//output->addColourAtPixel(i, j, pixelColour * weibullDist.getWeight(n) / n);
+				output->addColourAtPixel(i, j, pixelColour * (1.0 / myAnimResolution));
+
+				progressManager.advance();
+			}
+		}
+	}
+
+	name = strcat(name, ".ppm");
+	
 	// Output rendered image
 	output->outputImage(name);
 }

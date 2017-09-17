@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include <math.h>
 
-#define M_PI 3.14
+#define PI 3.14159265354
 
 Sphere::Sphere(const Material &material, const ColourRGB &colour) :
 Object3D::Object3D(material, colour) {
@@ -16,8 +16,24 @@ ColourRGB Sphere::colourAtLocalPoint(const Point3D &p) const {
     
     double theta = acos(p.z / radius);
     double phi = atan(p.y / p.x);
-    double a = fmod(phi, 2*M_PI) / (2*M_PI);
-    double b = (M_PI - theta) / M_PI;
+    double a = fmod(phi, 2*PI) / (2*PI);
+    double b = (PI - theta) / PI;
+	
+	if (a < 0.0 || b < 0.0)
+		return ColourRGB(0.7, 0.1, 0.1);
+
+	/*if ((sin(PI * p.x / 0.05) > 0))
+	{
+		//double t = (1 + sin(PI * p.y)) / 2.0;
+		//return ColourRGB(0.5, 0.6, 0.9) * (1.0 - t) + ColourRGB(0.7, 0.3, 0.8) * t;
+		if (sin(PI * p.y) > 0)
+		{
+			return ColourRGB(0.5, 0.6, 0.9);
+		}
+		return ColourRGB(0.7, 0.3, 0.8);
+	}
+	return ColourRGB(0.3, 0.3, 1.0);*/
+	
     return textureImage.textureMap(a, b);
 }
 

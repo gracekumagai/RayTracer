@@ -51,7 +51,7 @@ double TriangleFace::findIntersectionParams(Point3D &origin, Point3D &direction,
     return t;
 }
 
-BoundingBox BoundingBox::BuildVolumeHierarchy(const objl::Mesh &mesh) {
+BBoxMesh BBoxMesh::BuildVolumeHierarchy(const objl::Mesh &mesh) {
     // Construct all initial faces that will be in the bouding box
     vector<TriangleFace> faces;
     for (int i = 0; i < mesh.Indices.size(); i += 3) {
@@ -61,10 +61,10 @@ BoundingBox BoundingBox::BuildVolumeHierarchy(const objl::Mesh &mesh) {
                                      mesh));
     }
     
-    return BoundingBox(faces, 0, mesh, maxDepth);
+    return BBoxMesh(faces, 0, mesh, maxDepth);
 }
 
-BoundingBox::BoundingBox(vector<TriangleFace> faces, int splitAxis, const objl::Mesh &mesh, int depth) {
+BBoxMesh::BBoxMesh(vector<TriangleFace> faces, int splitAxis, const objl::Mesh &mesh, int depth) {
     findBoundsForFaces(faces);   // set the bounds of the bounding box based on faces enclosed
     
     // Base case, don't reduce bounding box any more (don't give it any more children)
@@ -163,11 +163,11 @@ BoundingBox::BoundingBox(vector<TriangleFace> faces, int splitAxis, const objl::
     
     splitAxis = (splitAxis+1)%3;    // alternate the split axis
     depth--;
-    children.push_back(BoundingBox(minBoxFaces, splitAxis, mesh, depth));
-    children.push_back(BoundingBox(maxBoxFaces, splitAxis, mesh, depth));
+    children.push_back(BBoxMesh(minBoxFaces, splitAxis, mesh, depth));
+    children.push_back(BBoxMesh(maxBoxFaces, splitAxis, mesh, depth));
 }
 
-TriangleFace* BoundingBox::intersect(Point3D &origin, Point3D &direction, double *lambda, double *u, double *v) {
+TriangleFace* BBoxMesh::intersect(Point3D &origin, Point3D &direction, double *lambda, double *u, double *v) {
     if (!doesIntersectBox(origin, direction)) {
         *lambda = DBL_MAX;
         return NULL;
@@ -209,7 +209,7 @@ TriangleFace* BoundingBox::intersect(Point3D &origin, Point3D &direction, double
     return closestFace;
 }
 
-bool BoundingBox::doesIntersect(Point3D &origin, Point3D &direction) {
+bool BBoxMesh::doesIntersect(Point3D &origin, Point3D &direction) {
     if (!doesIntersectBox(origin, direction)) return false;
     
     // Check through your own faces
@@ -227,7 +227,7 @@ bool BoundingBox::doesIntersect(Point3D &origin, Point3D &direction) {
     return false;
 }
 
-void BoundingBox::findBoundsForFaces(const vector<TriangleFace> containedFaces) {
+void BBoxMesh::findBoundsForFaces(const vector<TriangleFace> containedFaces) {
     maxX = -DBL_MAX; minX = DBL_MAX;
     maxY = -DBL_MAX; minY = DBL_MAX;
     maxZ = -DBL_MAX; minZ = DBL_MAX;
@@ -241,7 +241,7 @@ void BoundingBox::findBoundsForFaces(const vector<TriangleFace> containedFaces) 
     }
 }
 
-bool BoundingBox::doesIntersectBox(const Point3D &origin, const Point3D &direction) {
+bool BBoxMesh::doesIntersectBox(const Point3D &origin, const Point3D &direction) {
     double tmin = -DBL_MAX, tmax = DBL_MAX;
     Point3D bmin(minX, minY, minZ, true);
     Point3D bmax(maxX, maxY, maxZ, true);
