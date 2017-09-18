@@ -21,10 +21,14 @@ Torus::Torus(Point3D center, Point3D axis, double major, double minor, const Mat
 
 ColourRGB Torus::colourAtLocalPoint(const Point3D &p) const {
     // If no texture, return this object's standard color
-   
-	// Still need to implement.
-	// Currently does not suppor textures
-	return colour;
+    if (textureImage.myRGBImageData == NULL) {
+        return colour;
+    }
+	double b = asin(abs(p.y / myMinorR)) / (2.0 * PI);
+	double arg = p.x / (myMajorR + myMinorR * cos(b * 2.0 * PI));
+	double a = (acos(arg)) / (2.0 * PI);
+
+	return textureImage.textureMap(a, b);
 }
 
 Intersection Torus::intersect(const Ray3D &ray) {

@@ -236,18 +236,22 @@ void Scene::buildSceneTestDisk()
 	// Disk
 	Object3D *obj = new Torus(Material(0.75, 0.8, 0.4, 0.35, 1, 1, 6, 0.3),
 		ColourRGB(0.5, 0.25, 0.5));
+	//obj->scale(2.0, 2.0, 2.0);
 	obj->rotateX(-PI/4.0);
 	obj->translate(0.0, 1.0, 5.0);
+	obj->loadTexture("Textures/webtreats_stone_5.ppm");
 	myObjects.push_front(obj);
+
+	/*obj = new Sphere(Material(0.75, 0.8, 0.4, 0.35, 1, 1, 6, 0.3),
+		ColourRGB(0.5, 0.25, 0.5));
+	obj->translate(-3.0, 0.0, 5.0);
+	obj->loadTexture("Textures/webtreats_stone_5.ppm");
+	myObjects.push_front(obj);*/
 
 	//Point Light Source
 	PointLightSource *light = new PointLightSource(ColourRGB(0.95, 0.95, 0.95),       // original
 		Point3D(0.0, 15.5, -5.5, false));
 	myLights.push_front(light);
-
-	myProp.mySkybox = new Skybox("Skyboxes/lagoon_lf.ppm", "Skyboxes/lagoon_rt.ppm",
-		"Skyboxes/lagoon_dn.ppm", "Skyboxes/lagoon_up.ppm",
-		"Skyboxes/lagoon_bk.ppm", "Skyboxes/lagoon_ft.ppm");
 }
 
 void Scene::cleanUpScene(void)

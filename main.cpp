@@ -4,11 +4,14 @@
 #include "ObjectTypes/Fractals.h"
 #include "Scene.h"
 #include "Utilities/ProbabilityDist.h"
+#include "ObjectTypes/Spectrum.h"
 
 using namespace std;
 
 // maximum recursion depth
 int MAX_DEPTH;
+
+typedef RGBSpectrum Spectrum;
 
 int main(int argc, char *argv[])
 {

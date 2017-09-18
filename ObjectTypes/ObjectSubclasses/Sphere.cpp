@@ -35,8 +35,8 @@ ColourRGB Sphere::colourAtLocalPoint(const Point3D &p) const {
     double a = fmod(phi, 2*PI) / (2*PI);
     double b = (PI - theta) / PI;
 	
-	if (a < 0.0 || b < 0.0)
-		return ColourRGB(0.7, 0.1, 0.1);
+	//if (a < 0.0 || b < 0.0)
+	//	return ColourRGB(0.7, 0.1, 0.1);
 
 	/*if ((sin(PI * p.x / 0.05) > 0))
 	{
