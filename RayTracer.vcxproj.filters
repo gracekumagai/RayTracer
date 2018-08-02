@@ -111,9 +111,6 @@
     <ClCompile Include="Utilities\Math.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Integrator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -211,9 +208,6 @@
     </ClInclude>
     <ClInclude Include="Utilities\Math.h">
       <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Integrator.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files</Filter>

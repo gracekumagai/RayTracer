@@ -13,7 +13,6 @@
 #include "View.h"
 #include "Skybox.h"
 #include "Scene.h"
-#include "Integrator.h"
 
 using namespace std;
 

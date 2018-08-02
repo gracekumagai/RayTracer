@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -21,27 +21,28 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B7742DA9-8319-46EA-9B90-038AA8E15B92}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -102,7 +103,6 @@
     <ClCompile Include="GeometricTypes\Quaternion.cpp" />
     <ClCompile Include="geometrictypes\svdDynamic.cpp" />
     <ClCompile Include="geometrictypes\Transform3D.cpp" />
-    <ClCompile Include="Integrator.cpp" />
     <ClCompile Include="lights\AreaLightElement.cpp" />
     <ClCompile Include="lights\Light.cpp" />
     <ClCompile Include="lights\PointLightSource.cpp" />
@@ -138,7 +138,6 @@
     <ClInclude Include="GeometricTypes\Quaternion.h" />
     <ClInclude Include="geometrictypes\svdDynamic.h" />
     <ClInclude Include="geometrictypes\Transform3D.h" />
-    <ClInclude Include="Integrator.h" />
     <ClInclude Include="lights\AreaLightElement.h" />
     <ClInclude Include="lights\Light.h" />
     <ClInclude Include="lights\PointLightSource.h" />

@@ -34,25 +34,35 @@ int main(int argc, char *argv[])
     
     if (argc<7)
     {
-        fprintf(stderr,"RayTracer: Can not parse input parameters\n");
+        fprintf(stderr,"RayTracer: Can not parse input parameters - Using default values\n");
         fprintf(stderr,"USAGE: RayTracer size rec_depth antialias output_name\n");
         fprintf(stderr,"   size = Image size (both along x and y)\n");
         fprintf(stderr,"   rec_depth = Recursion depth\n");
         fprintf(stderr,"   antialias = A single digit, 0 disables antialiasing. Anything else enables antialiasing\n");
         fprintf(stderr,"   output_name = Name of the output file, e.g. MyRender.ppm\n");
         fprintf(stderr,"   parallization_params = 4 params for the bounds of pixels we are generating\n");
-        exit(0);
+        
+		sx = 512;
+		MAX_DEPTH = 1;
+		antialiasing = 0;
+		bounds.push_back(0);
+		bounds.push_back(sx);
+		bounds.push_back(0);
+		bounds.push_back(sx);
+		strcpy(&output_name[0], "test.pgm");
     }
-	
-    sx=atoi(argv[1]);
-    MAX_DEPTH=atoi(argv[2]);
-    if (atoi(argv[3])==0) antialiasing=0; else antialiasing=1;
-    strcpy(&output_name[0],argv[4]);
+	else
+	{
+		sx=atoi(argv[1]);
+		MAX_DEPTH=atoi(argv[2]);
+		if (atoi(argv[3])==0) antialiasing=0; else antialiasing=1;
+		strcpy(&output_name[0],argv[4]);
     
-    bounds.push_back(atoi(argv[5]));
-    bounds.push_back(atoi(argv[6]));
-    bounds.push_back(atoi(argv[7]));
-    bounds.push_back(atoi(argv[8]));
+		bounds.push_back(atoi(argv[5]));
+		bounds.push_back(atoi(argv[6]));
+		bounds.push_back(atoi(argv[7]));
+		bounds.push_back(atoi(argv[8]));
+	}
     
     fprintf(stderr,"Rendering image at %d x %d\n",sx,sx);
     fprintf(stderr,"Recursion depth = %d\n",MAX_DEPTH);
@@ -62,16 +72,14 @@ int main(int argc, char *argv[])
     
     // Allocate memory for the new image
     im = new Image(sx, sx);
-
-	//Fractals::renderFractalImage(im, output_name, bounds);
 	    
     e = Point3D(0.0, 0.0, -3.0, false);
     g = Point3D(0.0, 0.0, 0.0, false) - e;
     up = Point3D(0, 1, 0, true);
     View cam(e, g, up, -3, 4);
 
+	// Define scene
 	Scene scene(MAX_DEPTH, antialiasing);
-
 	scene.buildSceneTestDisk();
 
     fprintf(stderr,"View parameters:\n");
@@ -83,15 +91,15 @@ int main(int argc, char *argv[])
     fprintf(stderr,"\n");
     
     // Render the image with ray tracing
-    /*rayTracer.mySkyBox = skybox;
     rayTracer.myMaxDepth = MAX_DEPTH;
     rayTracer.myAntialiasingEnabled = antialiasing;
     rayTracer.mySuperSamplingResolution = 5;
     rayTracer.myGlossyReflEnabled = false;
     rayTracer.myRefractionEnabled = false;
 	rayTracer.myBlurEnabled = false;
-	rayTracer.myDOFEnabled = false;*/
+	rayTracer.myDOFEnabled = false;
 
+	// If animation is enabled
 	if (scene.myProp.myAnimResolution > 1)
 	{
 		// Render Images at KeyFrames
@@ -113,18 +121,16 @@ int main(int argc, char *argv[])
 
 			rayTracer.renderImage(cam, scene, im, newName, bounds);
 		}
-
 		rayTracer.renderAnimImage(im, output_name, bounds);
 	}
+	else
+	{
+		rayTracer.renderImage(cam, scene, im, output_name, bounds);
+	}
 
-	rayTracer.renderImage(cam, scene, im, output_name, bounds);
-
-	//rayTracer.renderNoiseImage(im, output_name, bounds);
-	
 	// Clean up
 	delete im;
 	
 	scene.cleanUpScene();
-
     return 0;
 }
