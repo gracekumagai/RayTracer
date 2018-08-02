@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 		bounds.push_back(sx);
 		bounds.push_back(0);
 		bounds.push_back(sx);
-		strcpy(&output_name[0], "test.pgm");
+		strcpy(&output_name[0], "Results/test.pgm");
     }
 	else
 	{
